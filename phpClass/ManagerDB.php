@@ -25,7 +25,7 @@ class ManagerDB
     }
 
 
-    public function register($utente)
+    public function registrazione($utente)
     {
         $query = "SELECT * FROM users WHERE email = '" . $utente->getEmail() . "'";
         $result = $this->conn->query($query);

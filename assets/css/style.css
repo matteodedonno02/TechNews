@@ -27,9 +27,23 @@ form
     border-radius: 0.25rem;
     
 }
-
 .button-field
 {
     text-align: center;
     pointer-events: all;
+}
+.alert
+{
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 40px;
+    z-index: 999;
+}
+.register
+{
+    height: 538px;
+}
+nav
+{
+    z-index: 99999;
 }

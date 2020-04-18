@@ -36,10 +36,10 @@ if(isset($_SESSION["loggedUser"]))
                     <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                     <a class="nav-link" href="login.php">Login</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                     <a class="nav-link" href="registrazione.php">Registrazione</a>
                     </li>
                 </ul>
@@ -51,34 +51,15 @@ if(isset($_SESSION["loggedUser"]))
 
     <div class="container">
         <?php
-        if(isset($_GET["errore"]) && $_GET["errore"] == "erroreLogin")
+        if(isset($_GET["errore"]))
         {
         ?>
             <div class="alert alert-dismissible alert-danger">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                <strong>Ahia!</strong> Dati errati o account inesistente.
+                <strong>Ahia!</strong> Account già esistente. <a href="login.php" class="alert-link">Vai alla pagina di login.</a>
             </div>
         <?php
         }
-        else if(isset($_GET["errore"]) && $_GET["errore"] == "notAut")
-        {
-        ?>
-            <div class="alert alert-dismissible alert-danger">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                <strong>Devi aspettare!</strong> L'amministratore non ti ha ancora aprovato.
-            </div>
-        <?php
-        }
-        else if(isset($_GET["registrazione"]))
-        {
-        ?>
-            <div class="alert alert-dismissible alert-success">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                <strong>Ti sei registrato!</strong> Attendi che l'amministratore ti accetti per poter effettuare il login.
-            </div>
-        <?php
-        }
-        
         ?>
     </div>
 
@@ -86,10 +67,22 @@ if(isset($_SESSION["loggedUser"]))
     
 
 
-    <div class="container form">
-      <form autocomplete="off" action="gestioneUtenti.php" method="POST">
-        <input type="hidden" name="cmd" value="login">
+    <div class="container form register">
+      <form autocomplete="off" action="gestioneUtenti.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="cmd" value="registrazione">
         <fieldset>
+            <div class="form-group">
+                <label for="txtNome">Nome</label>
+                <input type="text" required="true" class="form-control" id="txtNome" name="txtNome" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+                <label for="txtCognome">Cognome</label>
+                <input type="text" required="true" class="form-control" id="txtCognome" name="txtCognome" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+                <label for="txtLinkFoto">Foto profilo</label>
+                <input type="file" class="form-control-file" id="txtLinkFoto" name="txtLinkFoto" aria-describedby="fileHelp">
+            </div>
             <div class="form-group">
                 <label for="txtEmail">Email address</label>
                 <input type="email" required="true" class="form-control" id="txtEmail" name="txtEmail" aria-describedby="emailHelp">
@@ -98,9 +91,16 @@ if(isset($_SESSION["loggedUser"]))
                 <label for="txtPassword">Password</label>
                 <input type="password" required="true" class="form-control" name="txtPassword" id="txtPassword">
             </div>
+            <div class="form-group">
+            <label for="txtLevel">Example select</label>
+                <select class="form-control" id="txtLevel" name="txtLevel">
+                    <option>Lettore</option>
+                    <option>Scrittore</option>
+                </select>
+            </div>
         </fieldset>
         <div class="button-field">
-            <button type="submit" class="btn btn-outline-primary">LOGIN</button>
+            <button type="submit" class="btn btn-outline-primary">REGISTRATI</button>
         </div>
         </form>
       </div>

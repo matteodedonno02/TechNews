@@ -1,10 +1,6 @@
 <?php
 include "phpClass/ManagerDB.php";
 session_start();
-if(isset($_SESSION["loggedUser"]))
-{
-    header("location: index.php");
-}
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -40,7 +36,7 @@ if(isset($_SESSION["loggedUser"]))
                     <a class="nav-link" href="login.php">Login</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="register.php">Registrazione</a>
+                    <a class="nav-link" href="registrazione.php">Registrazione</a>
                     </li>
                 </ul>
             </div>
@@ -49,7 +45,6 @@ if(isset($_SESSION["loggedUser"]))
         else
         {
             $utente = $_SESSION["loggedUser"];
-            echo "SEI DENTRO";
         }
         ?>
       </nav>
