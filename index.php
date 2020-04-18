@@ -45,6 +45,24 @@ session_start();
         else
         {
             $utente = $_SESSION["loggedUser"];
+            if($utente->getLevel() == 1)
+            {
+            ?>
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                        <a class="nav-link" href="index.php">Home</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="login.php">Notizie</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                        </li>
+                    </ul>
+                </div>
+            <?php
+            }
         }
         ?>
       </nav>

@@ -3,6 +3,14 @@ include "phpClass/ManagerDB.php";
 session_start();
 
 
+if(isset($_GET["cmd"]) && $_GET["cmd"] == "logout")
+{
+    session_destroy();
+    header("location: index.php");
+    return;
+}
+
+
 if(!isset($_POST["cmd"]))
 {
     header("location: index.php");
