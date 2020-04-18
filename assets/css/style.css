@@ -47,3 +47,23 @@ nav
 {
     z-index: 99999;
 }
+.news
+{
+    margin-bottom: 40px;
+}
+.titolo
+{
+    color: #158CBA !important;
+}
+.blue-border
+{
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+    border-top-width: 1px;
+    border-color: #158CBA;
+    border-radius: 0.25rem;
+}
+.news a 
+{
+    text-decoration: none;
+}

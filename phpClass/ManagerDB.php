@@ -1,5 +1,7 @@
 <?php
 include "User.php";
+include "Categoria.php";
+include "News.php";
 class ManagerDB
 {
     private $conn;
@@ -43,6 +45,45 @@ class ManagerDB
             $this->conn->query($query);
         }
         return true;
+    }
+
+
+    public function getCategorie()
+    {
+        $listaCategorie = array();
+        $query = "SELECT * FROM categorie";
+        $result = $this->conn->query($query);
+        while($row = $result->fetch_assoc())
+        {
+            array_push($listaCategorie, new Categoria($row["idCategoria"], $row["nomeCategoria"]));
+        }
+
+
+        return $listaCategorie;
+    }
+
+
+    public function getUltimeNews()
+    {
+        $listaUltimeNews = array();
+        $query = "SELECT * FROM news ORDER BY idNews DESC LIMIT 3";
+        $result = $this->conn->query($query);
+        while($row = $result->fetch_assoc())
+        {
+            $categorie = array();
+            $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE n.idNews = " . $row["idNews"];
+            $result2 = $this->conn->query($query);
+            while($row2 = $result2->fetch_assoc())
+            {
+                array_push($categorie, new Categoria($row2["idCategoria"], $row2["nomeCategoria"]));
+            }
+
+
+            array_push($listaUltimeNews, new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], $categorie));
+        }
+
+
+        return $listaUltimeNews;
     }
 }
 ?>

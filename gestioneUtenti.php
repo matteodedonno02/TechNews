@@ -80,9 +80,5 @@ switch ($cmd)
 
         header("location: login.php?registrazione=registrazioneEffettuata");
     break;
-    case "logout":
-        session_start();
-        session_abort();
-    break;
 }
 ?>

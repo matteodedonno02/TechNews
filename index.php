@@ -1,6 +1,9 @@
 <?php
 include "phpClass/ManagerDB.php";
 session_start();
+$db = new ManagerDB();
+$listaCategorie = $db->getCategorie();
+$listaUltimeNews = $db->getUltimeNews();
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -66,6 +69,66 @@ session_start();
         }
         ?>
       </nav>
+
+    <?php
+    if(!isset($_SESSION["loggedUser"]))
+    {
+    ?>
+        <div class="container" style="text-align: center;">
+            <img src="assets/img/coding2.png" width="200px">
+        </div>
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Ops!</strong> <a href="login.php" class="alert-link">Effettua il login</a> o <a href="registrazione.php" class="alert-link">registrati</a> per poter accedere al sito.
+        </div>
+    <?php
+    }
+    else
+    {
+    ?>
+        <div class="container" style="margin-top: 80px">
+            <div class="row">
+                <div class="col-md-8 col-sm-12 blue-border">
+                <?php
+                for($i = 0; $i < count($listaUltimeNews); $i ++)
+                {
+                ?>
+                    <div class="news">
+                        <a href="dettaglio.php?tipo=news&id=<?php echo $listaUltimeNews[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaUltimeNews[$i]->getTitolo() ?></h3></a>
+
+
+                        <?php
+                        for($j = 0; $j < count($listaUltimeNews[$i]->getCategorie()); $j ++)
+                        {
+                        ?>
+                            <small class="text-muted"><?php echo $listaUltimeNews[$i]->getCategorie()[$j]->getNome() ?></small><br>
+                        <?php
+                        }
+                        ?>
+
+
+                        <p><?php echo substr($listaUltimeNews[$i]->getTesto(), 0, 200) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaUltimeNews[$i]->getIdNews() ?>">Continua a leggere</a></p>
+                    </div>
+                <?php
+                }
+                ?>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <h4 class="titolo">Categorie</h4>
+                    <?php
+                    for($i = 0; $i < count($listaCategorie); $i ++)
+                    {
+                    ?>
+                        <p class="lead">> <a href="dettaglio.php?tipo=cat&id=<?php echo $listaCategorie[$i]->getId(); ?>"><?php echo $listaCategorie[$i]->getNome(); ?></a></p>
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    <?php
+    }
+    ?>
 
       
 </body>
