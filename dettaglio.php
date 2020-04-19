@@ -1,9 +1,23 @@
 <?php
 include "phpClass/ManagerDB.php";
 session_start();
+
+
+if(!isset($_SESSION["loggedUser"]))
+{
+    header("location: index.php");
+    return;
+}
+
+
+if(!isset($_GET["tipo"]) || !isset($_GET["id"]))
+{
+    header("location: index.php");
+    return;
+}
+
+
 $db = new ManagerDB();
-$listaCategorie = $db->getCategorie();
-$listaUltimeNews = $db->getUltimeNews();
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -53,7 +67,7 @@ $listaUltimeNews = $db->getUltimeNews();
             ?>
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                         <a class="nav-link" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
@@ -71,7 +85,7 @@ $listaUltimeNews = $db->getUltimeNews();
             ?>
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                         <a class="nav-link" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
@@ -95,7 +109,7 @@ $listaUltimeNews = $db->getUltimeNews();
             ?>
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                         <a class="nav-link" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
@@ -118,58 +132,53 @@ $listaUltimeNews = $db->getUltimeNews();
         ?>
       </nav>
 
-    <?php
-    if(!isset($_SESSION["loggedUser"]))
-    {
-    ?>
-        <div class="alert alert-dismissible alert-danger">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Ops!</strong> <a href="login.php" class="alert-link">Effettua il login</a> o <a href="registrazione.php" class="alert-link">registrati</a> per poter accedere alle risorse del sito.
-        </div>
-    <?php
-    }
-    ?>
-    <div class="container" style="margin-top: 80px; margin-bottom: 80px;">
-        <div class="row">
-            <div class="col-md-8 col-sm-12 blue-border">
-            <?php
-            for($i = 0; $i < count($listaUltimeNews); $i ++)
-            {
-            ?>
-                <div class="news">
-                    <a href="dettaglio.php?tipo=news&id=<?php echo $listaUltimeNews[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaUltimeNews[$i]->getTitolo() ?></h3></a>
+
+    <div class="container" style="margin-top: 40px;">
+        <?php
+        $tipo = $_GET["tipo"];
+        $id = $_GET["id"];
 
 
+        switch($tipo)
+        {
+            case "news":
+                $temp = $db->getNewsDaId($id);
+                $news = $temp[0];
+                $autore = $temp[1];
+                ?>
+                    <h2 class="bold titolo"><?php echo $news->getTitolo() ?></h2>
+                    <small class="text-muted bold">Categorie: </small>
                     <?php
-                    for($j = 0; $j < count($listaUltimeNews[$i]->getCategorie()); $j ++)
+                    for($i = 0; $i < count($news->getCategorie()); $i ++)
                     {
+                        if($i == count($news->getCategorie()) - 1)
+                        {
+                        ?>
+                            <small class="text-muted"><?php echo $news->getCategorie()[$i]->getNome() ?></small>
+                        <?php
+                            continue;
+                        }
                     ?>
-                        <small class="text-muted"><?php echo $listaUltimeNews[$i]->getCategorie()[$j]->getNome() ?></small><br>
+                        <small class="text-muted"><?php echo $news->getCategorie()[$i]->getNome() ?>, </small>
                     <?php
                     }
                     ?>
-
-
-                    <p><?php echo substr($listaUltimeNews[$i]->getTesto(), 0, 200) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaUltimeNews[$i]->getIdNews() ?>">Continua a leggere</a></p>
-                </div>
-            <?php
-            }
-            ?>
-            </div>
-            <div class="col-md-4 col-sm-12">
-                <h4 class="titolo">Categorie</h4>
+                    <h4 class="titolo" style="margin-bottom: 20px;">Scritto da <?php echo ($autore->getNome() . " " . $autore->getCognome()) ?></h4>
+                    <?php
+                    if($news->getLinkImmagine() != "")
+                    {
+                    ?>
+                        <div class="floated">
+                            <img class="blue-border floated" src="<?php echo $news->getLinkImmagine() ?>">
+                        </div>
+                    <?php
+                    }
+                    ?>
+                    <p class="testo-news"><?php echo $news->getTesto(); ?></p>
                 <?php
-                for($i = 0; $i < count($listaCategorie); $i ++)
-                {
-                ?>
-                    <p class="lead">> <a href="dettaglio.php?tipo=cat&id=<?php echo $listaCategorie[$i]->getId(); ?>"><?php echo $listaCategorie[$i]->getNome(); ?></a></p>
-                <?php
-                }
-                ?>
-            </div>
-        </div>
+            break;
+        }
+        ?>
     </div>
-
-      
 </body>
 </html>

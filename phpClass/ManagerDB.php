@@ -85,5 +85,27 @@ class ManagerDB
 
         return $listaUltimeNews;
     }
+
+
+    public function getNewsDaId($id)
+    {
+        $query = "SELECT * FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE n.idNews = " . $id;
+        $result = $this->conn->query($query);
+        while($row = $result->fetch_assoc())
+        {
+            $categorie = array();
+            $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE n.idNews = " . $row["idNews"];
+            $result2 = $this->conn->query($query);
+            while($row2 = $result2->fetch_assoc())
+            {
+                array_push($categorie, new Categoria($row2["idCategoria"], $row2["nomeCategoria"]));
+            }
+
+            return array(
+                new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], $categorie),
+                new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"])
+            );
+        }
+    }
 }
 ?>

@@ -67,3 +67,17 @@ nav
 {
     text-decoration: none;
 }
+.floated img
+{
+    width: 600px;
+}
+.floated
+{
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+.testo-news
+{
+    font-size: medium;
+}
