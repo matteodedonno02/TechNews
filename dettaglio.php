@@ -92,9 +92,6 @@ $db = new ManagerDB();
                         <a class="nav-link" href="notizie.php">Notizie</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="notizie.php">Notizie</a>
-                        </li>
-                        <li class="nav-item">
                         <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
                         </li>
                         <li class="nav-item">
@@ -154,16 +151,16 @@ $db = new ManagerDB();
                         if($i == count($news->getCategorie()) - 1)
                         {
                         ?>
-                            <small class="text-muted"><?php echo $news->getCategorie()[$i]->getNome() ?></small>
+                            <small class="text-muted"><a href="dettaglio.php?tipo=cat&id=<?php echo $news->getCategorie()[$i]->getId() ?>"><?php echo $news->getCategorie()[$i]->getNome() ?></a></small>
                         <?php
                             continue;
                         }
                     ?>
-                        <small class="text-muted"><?php echo $news->getCategorie()[$i]->getNome() ?>, </small>
+                        <small class="text-muted"><a href="dettaglio.php?tipo=cat&id=<?php echo $news->getCategorie()[$i]->getId() ?>"><?php echo $news->getCategorie()[$i]->getNome() ?></a>, </small>
                     <?php
                     }
                     ?>
-                    <h4 class="titolo" style="margin-bottom: 20px;">Scritto da <?php echo ($autore->getNome() . " " . $autore->getCognome()) ?></h4>
+                    <h4 class="titolo" style="margin-bottom: 20px;">Scritto da <a href="dettaglio.php?tipo=user&id=<?php echo $autore->getId() ?>"><?php echo ($autore->getNome() . " " . $autore->getCognome()) ?></a></h4>
                     <?php
                     if($news->getLinkImmagine() != "")
                     {
@@ -204,6 +201,72 @@ $db = new ManagerDB();
 
 
             case "user":
+                $temp = $db->getNewsDaAutore($id);
+                $autore = $temp[0];
+                $listaNewsDaAutore = $temp[1];
+
+                ?>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label class="bold font-medium">Immagine profilo</label><br>
+                            <div class="image-profile photo-border">
+                            <?php
+                            if($autore->getLinkFoto() == "")
+                            {
+                            ?>
+                                <img src="assets/img/user.png">
+                            <?php
+                            }
+                            else
+                            {
+                            ?>
+                                <img src="<?php echo $autore->getLinkFoto() ?>">
+                            <?php
+                            }
+                            ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="bold font-medium">Nome : </label>
+                            <label class="font-medium"><?php echo $autore->getNome() ?></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="bold font-medium">Cognome : </label>
+                            <label class="font-medium"><?php echo $autore->getCognome() ?></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="bold font-medium">Email : </label>
+                            <label class="font-medium"><?php echo $autore->getEmail() ?></label>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-sm-12 blue-border">
+                    <?php
+                        for($i = 0; $i < count($listaNewsDaAutore); $i ++)
+                        {
+                        ?>
+                            <div class="news">
+                                <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaAutore[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNewsDaAutore[$i]->getTitolo() ?></h3></a>
+            
+            
+                                <?php
+                                for($j = 0; $j < count($listaNewsDaAutore[$i]->getCategorie()); $j ++)
+                                {
+                                ?>
+                                    <small class="text-muted"><a href="dettaglio.php?tipo=cat&id=<?php echo $listaNewsDaAutore[$i]->getCategorie()[$j]->getId()  ?>"><?php echo $listaNewsDaAutore[$i]->getCategorie()[$j]->getNome() ?></a></small><br>
+                                <?php
+                                }
+                                ?>
+            
+            
+                                <p class="testo-news"><?php echo substr($listaNewsDaAutore[$i]->getTesto(), 0, 200) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaAutore[$i]->getIdNews() ?>">Continua a leggere</a></p>
+                            </div>
+                        <?php
+                        }
+                    ?>
+                    </div>
+                </div>
+                <?php
             break;
         }
         ?>

@@ -4,6 +4,7 @@ session_start();
 $db = new ManagerDB();
 $listaCategorie = $db->getCategorie();
 $listaUltimeNews = $db->getUltimeNews();
+$listaAutori = $db->getAutori();
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -144,7 +145,7 @@ $listaUltimeNews = $db->getUltimeNews();
                     for($j = 0; $j < count($listaUltimeNews[$i]->getCategorie()); $j ++)
                     {
                     ?>
-                        <small class="text-muted"><?php echo $listaUltimeNews[$i]->getCategorie()[$j]->getNome() ?></small><br>
+                        <small class="text-muted"><a href="dettaglio.php?tipo=cat&id=<?php echo $listaUltimeNews[$i]->getCategorie()[$j]->getId() ?>"><?php echo $listaUltimeNews[$i]->getCategorie()[$j]->getNome() ?></a></small><br>
                     <?php
                     }
                     ?>
@@ -163,6 +164,17 @@ $listaUltimeNews = $db->getUltimeNews();
                 {
                 ?>
                     <p class="lead">> <a href="dettaglio.php?tipo=cat&id=<?php echo $listaCategorie[$i]->getId(); ?>"><?php echo $listaCategorie[$i]->getNome(); ?></a></p>
+                <?php
+                }
+                ?>
+
+
+                <h4 class="titolo">Autori</h4>
+                <?php
+                for($i = 0; $i < count($listaAutori); $i ++)
+                {
+                ?>
+                    <p class="lead">> <a href="dettaglio.php?tipo=user&id=<?php echo $listaAutori[$i]->getId() ?>"><?php echo ($listaAutori[$i]->getNome() . " " . $listaAutori[$i]->getCognome()) ?></a></p>
                 <?php
                 }
                 ?>

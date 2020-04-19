@@ -131,5 +131,52 @@ class ManagerDB
 
         return array($categoria, $listaNewsDaCategoria);
     }
+
+
+    public function getNewsDaAutore($id)
+    {
+        $autore;
+        $query = "SELECT * FROM users WHERE idUser = " . $id;
+        $result = $this->conn->query($query);
+        while($row = $result->fetch_assoc())
+        {
+            $autore = new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"]);
+        }
+
+
+        $listaNewsdaAutore = array();
+        $query = "SELECT * FROM users u INNER JOIN news n ON u.idUser = n.idUser WHERE u.idUser = " . $id;
+        $result = $this->conn->query($query);
+        while($row = $result->fetch_assoc())
+        {
+            $categorie = array();
+            $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE n.idNews = " . $row["idNews"];
+            $result2 = $this->conn->query($query);
+            while($row2 = $result2->fetch_assoc())
+            {
+                array_push($categorie, new Categoria($row2["idCategoria"], $row2["nomeCategoria"]));
+            }
+        
+            array_push($listaNewsdaAutore, new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], $categorie));
+        }
+
+
+        return array($autore, $listaNewsdaAutore);
+    }
+
+
+    public function getAutori()
+    {
+        $listaAutori = array();
+        $query = "SELECT * FROM users WHERE level = 2";
+        $result = $this->conn->query($query);
+        while($row = $result->fetch_assoc())
+        {
+            array_push($listaAutori, new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"]));
+        }
+
+
+        return $listaAutori;
+    }
 }
 ?>

@@ -65,7 +65,7 @@ switch ($cmd)
             $photo_tmp = $_FILES["txtLinkFoto"]["tmp_name"];
             $photo_name = $_FILES["txtLinkFoto"]["name"];
             move_uploaded_file($photo_tmp, $uploaddir . $photo_name);
-            $linkFoto = $uploaddir . $photo_name;
+            $linkFoto = "assets/img/userImg/" . $email . "/" . $photo_name;
         }
         
         

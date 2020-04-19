@@ -81,3 +81,30 @@ nav
 {
     font-size: medium;
 }
+.font-medium
+{
+    font-size: medium;
+}
+.image-profile
+{
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+.image-profile img
+{
+    position: absolute;
+    margin: auto; 
+    min-height: 100%;
+    left: -100%;
+    right: -100%;
+    top: -100%;
+    bottom: -100%;
+    width: 200px;
+}
+.photo-border
+{
+    border: 3px solid #158CBA;
+    border-radius: 50%;
+}
