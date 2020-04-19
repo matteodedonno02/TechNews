@@ -80,5 +80,9 @@ switch ($cmd)
 
         header("location: login.php?registrazione=registrazioneEffettuata");
     break;
+    case "aggiungiCommento":
+        $db->aggiungiCommento($_POST["txtCommento"], $_POST["idUser"], $_POST["idNews"]);
+        header("location: dettaglio.php?tipo=news&id=" . $_POST["idNews"]);
+    break;
 }
 ?>

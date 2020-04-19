@@ -2,6 +2,7 @@
 include "User.php";
 include "Categoria.php";
 include "News.php";
+include "Commento.php";
 class ManagerDB
 {
     private $conn;
@@ -66,7 +67,7 @@ class ManagerDB
     public function getUltimeNews()
     {
         $listaUltimeNews = array();
-        $query = "SELECT * FROM news ORDER BY idNews DESC LIMIT 3";
+        $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM news ORDER BY idNews DESC LIMIT 3";
         $result = $this->conn->query($query);
         while($row = $result->fetch_assoc())
         {
@@ -79,7 +80,7 @@ class ManagerDB
             }
 
 
-            array_push($listaUltimeNews, new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], $categorie));
+            array_push($listaUltimeNews, new News($row["idNews"], $row["titolo"], $row["testo"], $row["dataFormattata"], $row["linkImmagine"], $row["idUser"], $categorie));
         }
 
 
@@ -87,11 +88,43 @@ class ManagerDB
     }
 
 
+    public function getNews($ricerca)
+    {
+        $listaNews = array();
+        if($ricerca != "")
+        {
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM news WHERE LOWER(titolo) LIKE '%" . $ricerca . "%' OR LOWER(testo) LIKE '%" . $ricerca . "%' ORDER BY idNews DESC";
+        }
+        else
+        {
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM news ORDER BY idNews DESC";
+        }
+        
+        $result = $this->conn->query($query);
+        while($row = $result->fetch_assoc())
+        {
+            $categorie = array();
+            $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE n.idNews = " . $row["idNews"];
+            $result2 = $this->conn->query($query);
+            while($row2 = $result2->fetch_assoc())
+            {
+                array_push($categorie, new Categoria($row2["idCategoria"], $row2["nomeCategoria"]));
+            }
+
+
+            array_push($listaNews, new News($row["idNews"], $row["titolo"], $row["testo"], $row["dataFormattata"], $row["linkImmagine"], $row["idUser"], $categorie));
+        }
+
+
+        return $listaNews;
+    }
+
+
     public function getNewsDaId($id)
     {
         if(is_numeric($id))
         {
-            $query = "SELECT * FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE n.idNews = " . $id;
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE n.idNews = " . $id;
             $result = $this->conn->query($query);
             if(mysqli_num_rows($result) == 0)
             {
@@ -110,7 +143,7 @@ class ManagerDB
                 }
 
                 return array(
-                    new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], $categorie),
+                    new News($row["idNews"], $row["titolo"], $row["testo"], $row["dataFormattata"], $row["linkImmagine"], $row["idUser"], $categorie),
                     new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"])
                 );
             }
@@ -135,11 +168,11 @@ class ManagerDB
                 $categoria = $row["nomeCategoria"];
             }
 
-            $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE c.idCategoria = " . $id;
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE c.idCategoria = " . $id;
             $result = $this->conn->query($query);
             while($row = $result->fetch_assoc())
             {
-                array_push($listaNewsDaCategoria, new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], null));
+                array_push($listaNewsDaCategoria, new News($row["idNews"], $row["titolo"], $row["testo"], $row["dataFormattata"], $row["linkImmagine"], $row["idUser"], null));
             }
         }
 
@@ -165,7 +198,7 @@ class ManagerDB
 
 
             
-            $query = "SELECT * FROM users u INNER JOIN news n ON u.idUser = n.idUser WHERE u.idUser = " . $id;
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM users u INNER JOIN news n ON u.idUser = n.idUser WHERE u.idUser = " . $id;
             $result = $this->conn->query($query);
             while($row = $result->fetch_assoc())
             {
@@ -177,7 +210,7 @@ class ManagerDB
                     array_push($categorie, new Categoria($row2["idCategoria"], $row2["nomeCategoria"]));
                 }
             
-                array_push($listaNewsdaAutore, new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], $categorie));
+                array_push($listaNewsdaAutore, new News($row["idNews"], $row["titolo"], $row["testo"], $row["dataFormattata"], $row["linkImmagine"], $row["idUser"], $categorie));
             }
         }
 
@@ -198,6 +231,28 @@ class ManagerDB
 
 
         return $listaAutori;
+    }
+
+
+    public function getCommenti($idNews)
+    {
+        $listaCommenti = array();
+        $query = "SELECT * FROM commenti c INNER JOIN users u ON c.idUser = u.idUser WHERE c.idNews = " . $idNews;
+        $result = $this->conn->query($query);
+        while($row = $result->fetch_assoc())
+        {
+            array_push($listaCommenti, new Commento($row["idCommento"], $row["testo"], new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"])));
+        }
+
+
+        return $listaCommenti;
+    }
+
+
+    public function aggiungiCommento($testo, $idUser, $idNews)
+    {
+        $query = "INSERT INTO commenti VALUES(0, '" . $testo ."', " . $idUser . ", " . $idNews .")";
+        $this->conn->query($query);
     }
 }
 ?>

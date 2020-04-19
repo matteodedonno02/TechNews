@@ -62,6 +62,7 @@ nav
     border-top-width: 1px;
     border-color: #158CBA;
     border-radius: 0.25rem;
+    border-bottom: 4px solid #127ba3;
 }
 .news a 
 {
@@ -107,4 +108,21 @@ nav
 {
     border: 3px solid #158CBA;
     border-radius: 50%;
+}
+.date
+{
+    font-size: 20px;
+    font-weight: normal;
+}
+#txtCommento
+{
+    resize: none;
+}
+.testo-commento
+{
+    font-size: small;
+}
+.comment-separator
+{
+    border: 1px solid #158CBA;
 }

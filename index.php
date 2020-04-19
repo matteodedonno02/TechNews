@@ -79,9 +79,6 @@ $listaAutori = $db->getAutori();
                         <a class="nav-link" href="notizie.php">Notizie</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="notizie.php">Notizie</a>
-                        </li>
-                        <li class="nav-item">
                         <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
                         </li>
                         <li class="nav-item">
@@ -138,7 +135,8 @@ $listaAutori = $db->getAutori();
             {
             ?>
                 <div class="news">
-                    <a href="dettaglio.php?tipo=news&id=<?php echo $listaUltimeNews[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaUltimeNews[$i]->getTitolo() ?></h3></a>
+                    <a href="dettaglio.php?tipo=news&id=<?php echo $listaUltimeNews[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaUltimeNews[$i]->getTitolo() ?> <label class="date"> <?php echo $listaUltimeNews[$i]->getDataPubblicazione() ?></label></h3></a>
+
 
 
                     <?php

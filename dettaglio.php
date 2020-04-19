@@ -146,6 +146,9 @@ $db = new ManagerDB();
                 $autore = $temp[1];
 
 
+                $listaCommenti = $db->getCommenti($id);
+
+
                 if($news == "")
                 {
                 ?>
@@ -159,7 +162,7 @@ $db = new ManagerDB();
 
 
                 ?>
-                    <h2 class="bold titolo"><?php echo $news->getTitolo() ?></h2>
+                    <h2 class="bold titolo"><?php echo $news->getTitolo() ?> <label class="date"> <?php echo $news->getDataPubblicazione() ?></label></h2>
                     <small class="text-muted bold">Categorie: </small>
                     <?php
                     for($i = 0; $i < count($news->getCategorie()); $i ++)
@@ -188,6 +191,45 @@ $db = new ManagerDB();
                     }
                     ?>
                     <p class="testo-news"><?php echo $news->getTesto(); ?></p>
+
+                    <h4 class="titolo bold">Sezione commenti</h4>
+                    <form method="POST" action="gestioneUtenti.php">
+                        <input type="hidden" name="cmd" value="aggiungiCommento">
+                        <input type="hidden" name="idUser" value="<?php echo $utente->getId() ?>">
+                        <input type="hidden" name="idNews" value="<?php echo $id?>">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <textarea style="margin-bottom: 10px;" required="true" class="form-control" id="txtCommento" name="txtCommento" rows="2"></textarea>
+                                    <button type="submit" class="btn btn-outline-primary">SCRIVI COMMENTO</button>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                <?php
+                                if(count($listaCommenti) == 0)
+                                {
+                                ?>
+                                    <h5 class="titolo">Al momento questa news non contiene commenti</h5>
+                                <?php
+                                }
+
+                                for($i = 0; $i < count($listaCommenti); $i ++)
+                                {
+                                ?>
+                                    <h5 class="titolo"><?php echo $listaCommenti[$i]->getUser()->getEmail() ?></h5>
+                                    <p class="testo-commento"><?php echo $listaCommenti[$i]->getTesto() ?></p>
+                                <?php
+                                    if ($i < count($listaCommenti) - 1) 
+                                    {
+                                    ?>
+                                        <hr class="comment-separator">
+                                    <?php
+                                    }
+                                }
+                                ?>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 <?php
             break;
 
@@ -218,7 +260,7 @@ $db = new ManagerDB();
                 {
                 ?>
                     <div class="news">
-                        <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaCategoria[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNewsDaCategoria[$i]->getTitolo() ?></h3></a>
+                        <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaCategoria[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNewsDaCategoria[$i]->getTitolo() ?> <label class="date"> <?php echo $listaNewsDaCategoria[$i]->getDataPubblicazione() ?></label></h3></a>
 
                         <p class="testo-news"><?php echo substr($listaNewsDaCategoria[$i]->getTesto(), 0, 300) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaCategoria[$i]->getIdNews() ?>">Continua a leggere</a></p>
                     </div>
@@ -251,7 +293,7 @@ $db = new ManagerDB();
                 <div class="row">
                     <div class="col-md-4 col-sm-12">
                         <div class="form-group">
-                            <label class="bold font-medium">Immagine profilo</label><br>
+                            <label class="bold font-medium titolo">Immagine profilo</label><br>
                             <div class="image-profile photo-border">
                             <?php
                             if($autore->getLinkFoto() == "")
@@ -270,25 +312,33 @@ $db = new ManagerDB();
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="bold font-medium">Nome : </label>
+                            <label class="bold font-medium titolo">Nome </label>
                             <label class="font-medium"><?php echo $autore->getNome() ?></label>
                         </div>
                         <div class="form-group">
-                            <label class="bold font-medium">Cognome : </label>
+                            <label class="bold font-medium titolo">Cognome </label>
                             <label class="font-medium"><?php echo $autore->getCognome() ?></label>
                         </div>
                         <div class="form-group">
-                            <label class="bold font-medium">Email : </label>
+                            <label class="bold font-medium titolo">Email </label>
                             <label class="font-medium"><?php echo $autore->getEmail() ?></label>
                         </div>
                     </div>
                     <div class="col-md-8 col-sm-12 blue-border">
                     <?php
+                        if(count($listaNewsDaAutore) == 0)
+                        {
+                        ?>
+                            <label class="font-medium bold titolo">Questo autore non ha scritto nessuna news al momento</label>
+                        <?php
+                        }
+
+
                         for($i = 0; $i < count($listaNewsDaAutore); $i ++)
                         {
                         ?>
                             <div class="news">
-                                <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaAutore[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNewsDaAutore[$i]->getTitolo() ?></h3></a>
+                                <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaAutore[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNewsDaAutore[$i]->getTitolo() ?> <label class="date"> <?php echo $listaNewsDaAutore[$i]->getDataPubblicazione() ?></label></h3></a>
             
             
                                 <?php

@@ -92,8 +92,8 @@ if(isset($_SESSION["loggedUser"]))
                 <input type="password" required="true" class="form-control" name="txtPassword" id="txtPassword">
             </div>
             <div class="form-group">
-            <label for="txtLevel">Example select</label>
-                <select class="form-control" id="txtLevel" name="txtLevel">
+            <label for="txtLevel">Tipo</label>
+                <select class="form-control custom-select" id="txtLevel" name="txtLevel">
                     <option>Lettore</option>
                     <option>Scrittore</option>
                 </select>
