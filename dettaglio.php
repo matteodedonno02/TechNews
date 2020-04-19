@@ -177,6 +177,34 @@ $db = new ManagerDB();
                     <p class="testo-news"><?php echo $news->getTesto(); ?></p>
                 <?php
             break;
+
+
+            case "cat":
+                $temp = $db->getNewsDaCategoria($id);
+                $categoria = $temp[0];
+                $listaNewsDaCategoria = $temp[1];
+                ?>
+                    <h2 class="bold titolo" style="margin-bottom: 20px;">Tutte le news della cagetoria <?php echo $categoria ?></h2>
+                    <div class="blue-border">
+                <?php
+                for($i = 0; $i < count($listaNewsDaCategoria); $i ++)
+                {
+                ?>
+                    <div class="news">
+                        <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaCategoria[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNewsDaCategoria[$i]->getTitolo() ?></h3></a>
+
+                        <p class="testo-news"><?php echo substr($listaNewsDaCategoria[$i]->getTesto(), 0, 300) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaCategoria[$i]->getIdNews() ?>">Continua a leggere</a></p>
+                    </div>
+                <?php
+                }
+                ?>
+                </div>
+                <?php
+            break;
+
+
+            case "user":
+            break;
         }
         ?>
     </div>

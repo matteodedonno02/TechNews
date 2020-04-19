@@ -107,5 +107,29 @@ class ManagerDB
             );
         }
     }
+
+
+    public function getNewsDaCategoria($id)
+    {
+        $categoria;
+        $query = "SELECT nomeCategoria FROM categorie WHERE idCategoria = " . $id;
+        $result = $this->conn->query($query);
+        while($row = $result->fetch_assoc())
+        {
+            $categoria = $row["nomeCategoria"];
+        }
+
+
+        $listaNewsDaCategoria = array();
+        $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE c.idCategoria = " . $id;
+        $result = $this->conn->query($query);
+        while($row = $result->fetch_assoc())
+        {
+            array_push($listaNewsDaCategoria, new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], null));
+        }
+
+
+        return array($categoria, $listaNewsDaCategoria);
+    }
 }
 ?>
