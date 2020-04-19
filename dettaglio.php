@@ -140,8 +140,24 @@ $db = new ManagerDB();
         {
             case "news":
                 $temp = $db->getNewsDaId($id);
+
+
                 $news = $temp[0];
                 $autore = $temp[1];
+
+
+                if($news == "")
+                {
+                ?>
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Ops!</strong> Risorsa non trovata.
+                    </div>
+                <?php
+                    return;
+                }
+
+
                 ?>
                     <h2 class="bold titolo"><?php echo $news->getTitolo() ?></h2>
                     <small class="text-muted bold">Categorie: </small>
@@ -180,6 +196,20 @@ $db = new ManagerDB();
                 $temp = $db->getNewsDaCategoria($id);
                 $categoria = $temp[0];
                 $listaNewsDaCategoria = $temp[1];
+
+
+                if($categoria == "")
+                {
+                ?>
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Ops!</strong> Risorsa non trovata.
+                    </div> 
+                <?php
+                    return;
+                }
+
+
                 ?>
                     <h2 class="bold titolo" style="margin-bottom: 20px;">Tutte le news della cagetoria <?php echo $categoria ?></h2>
                     <div class="blue-border">
@@ -204,6 +234,18 @@ $db = new ManagerDB();
                 $temp = $db->getNewsDaAutore($id);
                 $autore = $temp[0];
                 $listaNewsDaAutore = $temp[1];
+
+
+                if($autore == "")
+                {
+                ?>
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Ops!</strong> Risorsa non trovata.
+                    </div>
+                <?php
+                    return;
+                }
 
                 ?>
                 <div class="row">

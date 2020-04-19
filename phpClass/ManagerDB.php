@@ -89,43 +89,58 @@ class ManagerDB
 
     public function getNewsDaId($id)
     {
-        $query = "SELECT * FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE n.idNews = " . $id;
-        $result = $this->conn->query($query);
-        while($row = $result->fetch_assoc())
+        if(is_numeric($id))
         {
-            $categorie = array();
-            $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE n.idNews = " . $row["idNews"];
-            $result2 = $this->conn->query($query);
-            while($row2 = $result2->fetch_assoc())
+            $query = "SELECT * FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE n.idNews = " . $id;
+            $result = $this->conn->query($query);
+            if(mysqli_num_rows($result) == 0)
             {
-                array_push($categorie, new Categoria($row2["idCategoria"], $row2["nomeCategoria"]));
+                return array("", "");
             }
 
-            return array(
-                new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], $categorie),
-                new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"])
-            );
+
+            while($row = $result->fetch_assoc())
+            {
+                $categorie = array();
+                $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE n.idNews = " . $row["idNews"];
+                $result2 = $this->conn->query($query);
+                while($row2 = $result2->fetch_assoc())
+                {
+                    array_push($categorie, new Categoria($row2["idCategoria"], $row2["nomeCategoria"]));
+                }
+
+                return array(
+                    new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], $categorie),
+                    new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"])
+                );
+            }
         }
+
+
+        return array("", "");
     }
 
 
     public function getNewsDaCategoria($id)
     {
-        $categoria;
-        $query = "SELECT nomeCategoria FROM categorie WHERE idCategoria = " . $id;
-        $result = $this->conn->query($query);
-        while($row = $result->fetch_assoc())
-        {
-            $categoria = $row["nomeCategoria"];
-        }
-
-
+        $categoria = "";
         $listaNewsDaCategoria = array();
-        $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE c.idCategoria = " . $id;
-        $result = $this->conn->query($query);
-        while($row = $result->fetch_assoc())
+        
+        if(is_numeric($id))
         {
-            array_push($listaNewsDaCategoria, new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], null));
+            $query = "SELECT nomeCategoria FROM categorie WHERE idCategoria = " . $id;
+            $result = $this->conn->query($query);
+            while($row = $result->fetch_assoc())
+            {
+                $categoria = $row["nomeCategoria"];
+            }
+
+            $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE c.idCategoria = " . $id;
+            $result = $this->conn->query($query);
+            while($row = $result->fetch_assoc())
+            {
+                array_push($listaNewsDaCategoria, new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], null));
+            }
         }
 
 
@@ -135,29 +150,35 @@ class ManagerDB
 
     public function getNewsDaAutore($id)
     {
-        $autore;
-        $query = "SELECT * FROM users WHERE idUser = " . $id;
-        $result = $this->conn->query($query);
-        while($row = $result->fetch_assoc())
-        {
-            $autore = new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"]);
-        }
-
-
+        $autore = "";
         $listaNewsdaAutore = array();
-        $query = "SELECT * FROM users u INNER JOIN news n ON u.idUser = n.idUser WHERE u.idUser = " . $id;
-        $result = $this->conn->query($query);
-        while($row = $result->fetch_assoc())
+
+
+        if(is_numeric($id))
         {
-            $categorie = array();
-            $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE n.idNews = " . $row["idNews"];
-            $result2 = $this->conn->query($query);
-            while($row2 = $result2->fetch_assoc())
+            $query = "SELECT * FROM users WHERE idUser = " . $id;
+            $result = $this->conn->query($query);
+            while($row = $result->fetch_assoc())
             {
-                array_push($categorie, new Categoria($row2["idCategoria"], $row2["nomeCategoria"]));
+                $autore = new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"]);
             }
-        
-            array_push($listaNewsdaAutore, new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], $categorie));
+
+
+            
+            $query = "SELECT * FROM users u INNER JOIN news n ON u.idUser = n.idUser WHERE u.idUser = " . $id;
+            $result = $this->conn->query($query);
+            while($row = $result->fetch_assoc())
+            {
+                $categorie = array();
+                $query = "SELECT * FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE n.idNews = " . $row["idNews"];
+                $result2 = $this->conn->query($query);
+                while($row2 = $result2->fetch_assoc())
+                {
+                    array_push($categorie, new Categoria($row2["idCategoria"], $row2["nomeCategoria"]));
+                }
+            
+                array_push($listaNewsdaAutore, new News($row["idNews"], $row["titolo"], $row["testo"], $row["linkImmagine"], $row["idUser"], $categorie));
+            }
         }
 
 
