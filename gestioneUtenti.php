@@ -64,8 +64,15 @@ switch ($cmd)
 
             $photo_tmp = $_FILES["txtLinkFoto"]["tmp_name"];
             $photo_name = $_FILES["txtLinkFoto"]["name"];
-            move_uploaded_file($photo_tmp, $uploaddir . $photo_name);
-            $linkFoto = "assets/img/userImg/" . $email . "/" . $photo_name;
+            if($photo_name == "")
+            {
+                $linkFoto = "";
+            }
+            else
+            {
+                move_uploaded_file($photo_tmp, $uploaddir . $photo_name);
+                $linkFoto = "assets/img/userImg/" . $email . "/" . $photo_name;
+            }
         }
         
         
@@ -83,6 +90,38 @@ switch ($cmd)
     case "aggiungiCommento":
         $db->aggiungiCommento($_POST["txtCommento"], $_POST["idUser"], $_POST["idNews"]);
         header("location: dettaglio.php?tipo=news&id=" . $_POST["idNews"]);
+    break;
+    case "aggiungiNews":
+
+        $linkFoto = "";
+
+
+        if (isset($_FILES["txtLinkFoto"]) || !is_uploaded_file($_FILES["txtLinkFoto"]["tmp_name"])) 
+        {
+            define ("SITE_ROOT", realpath(dirname(__FILE__)));
+            $uploaddir = SITE_ROOT . "/assets/img/newsImg/";
+            if(!file_exists($uploaddir))
+            {
+                mkdir($uploaddir);
+            }
+
+
+            $photo_tmp = $_FILES["txtLinkFoto"]["tmp_name"];
+            $photo_name = $_FILES["txtLinkFoto"]["name"];
+            if($photo_name == "")
+            {
+                $linkFoto = "";
+            }
+            else 
+            {
+                move_uploaded_file($photo_tmp, $uploaddir . $photo_name);
+                $linkFoto = "assets/img/newsImg/" . $photo_name;
+            }
+        }
+
+
+        $db->aggiungiNews(new News(0, $_POST["txtTitolo"], $_POST["txtNews"], null, $linkFoto, $_POST["idUser"], $_POST["txtCategorie"]));
+        header("location: index.php");
     break;
 }
 ?>

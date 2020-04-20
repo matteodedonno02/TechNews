@@ -90,8 +90,9 @@ nav
 {
     width: 200px;
     height: 200px;
-    overflow: hidden;
-    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
 }
 .image-profile img
 {
@@ -125,4 +126,49 @@ nav
 .comment-separator
 {
     border: 1px solid #158CBA;
+}
+.tox-notifications-container
+{
+    display: none;
+}
+.tox-statusbar__branding
+{
+    display: none;
+}
+.tox .tox-menubar
+{
+    display: none !important;
+}
+.tox-tinymce
+{
+    border-style: solid !important;
+    border-width: 0 1px 4px 1px !important;
+    border-top-width: 1px !important;
+    border-color: #158CBA !important;
+    border-radius: 0.25rem !important;
+    border-bottom: 4px solid #127ba3 !important;
+}
+#txtLinkFoto
+{
+    display: none;
+}
+.categoria,
+.categoria-scelta
+{
+    margin-right: 10px;
+}
+.my-alert
+{
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 40px;
+    z-index: 999;
+}
+.tox-tbtn__select-label
+{
+    display: none !important;
+}
+.tox .tox-tbtn--select
+{
+    display: none !important;
 }

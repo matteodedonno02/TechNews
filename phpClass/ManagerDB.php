@@ -38,13 +38,15 @@ class ManagerDB
         }
 
         
-        $query = "INSERT INTO users VALUES(0, '" . $utente->getNome() . "', '" . $utente->getCognome() . "', '" . $utente->getLinkFoto() . "', '" . $utente->getEmail() . "', md5('" . $utente->getPassword() . "'), " . $utente->getLevel() . ", '" . $utente->getAut() . "')";
-        $this->conn->query($query);
         if($utente->getLinkFoto() == "")
         {
-            $query = "UPDATE users SET linkFoto = NULL";
-            $this->conn->query($query);
+            $query = "INSERT INTO users VALUES(0, '" . $utente->getNome() . "', '" . $utente->getCognome() . "', NULL, '" . $utente->getEmail() . "', md5('" . $utente->getPassword() . "'), " . $utente->getLevel() . ", '" . $utente->getAut() . "')";
         }
+        else
+        {
+            $query = "INSERT INTO users VALUES(0, '" . $utente->getNome() . "', '" . $utente->getCognome() . "', '" . $utente->getLinkFoto() . "', '" . $utente->getEmail() . "', md5('" . $utente->getPassword() . "'), " . $utente->getLevel() . ", '" . $utente->getAut() . "')";
+        }
+        $this->conn->query($query);
         return true;
     }
 
@@ -67,7 +69,7 @@ class ManagerDB
     public function getUltimeNews()
     {
         $listaUltimeNews = array();
-        $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM news ORDER BY idNews DESC LIMIT 3";
+        $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news ORDER BY idNews DESC LIMIT 3";
         $result = $this->conn->query($query);
         while($row = $result->fetch_assoc())
         {
@@ -93,11 +95,11 @@ class ManagerDB
         $listaNews = array();
         if($ricerca != "")
         {
-            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM news WHERE LOWER(titolo) LIKE '%" . $ricerca . "%' OR LOWER(testo) LIKE '%" . $ricerca . "%' ORDER BY idNews DESC";
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news WHERE LOWER(titolo) LIKE '%" . $ricerca . "%' OR LOWER(testo) LIKE '%" . $ricerca . "%' ORDER BY idNews DESC";
         }
         else
         {
-            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM news ORDER BY idNews DESC";
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news ORDER BY idNews DESC";
         }
         
         $result = $this->conn->query($query);
@@ -124,7 +126,7 @@ class ManagerDB
     {
         if(is_numeric($id))
         {
-            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE n.idNews = " . $id;
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE n.idNews = " . $id;
             $result = $this->conn->query($query);
             if(mysqli_num_rows($result) == 0)
             {
@@ -168,7 +170,7 @@ class ManagerDB
                 $categoria = $row["nomeCategoria"];
             }
 
-            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE c.idCategoria = " . $id;
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE c.idCategoria = " . $id . " ORDER BY n.idNews DESC";
             $result = $this->conn->query($query);
             while($row = $result->fetch_assoc())
             {
@@ -198,7 +200,7 @@ class ManagerDB
 
 
             
-            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%Y/%m/%d') as dataFormattata FROM users u INNER JOIN news n ON u.idUser = n.idUser WHERE u.idUser = " . $id;
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM users u INNER JOIN news n ON u.idUser = n.idUser WHERE u.idUser = " . $id . " ORDER BY n.idNews DESC";
             $result = $this->conn->query($query);
             while($row = $result->fetch_assoc())
             {
@@ -222,7 +224,7 @@ class ManagerDB
     public function getAutori()
     {
         $listaAutori = array();
-        $query = "SELECT * FROM users WHERE level = 2";
+        $query = "SELECT * FROM users WHERE level = 2 AND aut = 'Y'";
         $result = $this->conn->query($query);
         while($row = $result->fetch_assoc())
         {
@@ -253,6 +255,47 @@ class ManagerDB
     {
         $query = "INSERT INTO commenti VALUES(0, '" . $testo ."', " . $idUser . ", " . $idNews .")";
         $this->conn->query($query);
+    }
+
+
+    public function aggiungiNews($news)
+    {
+        if($news->getLinkImmagine() == "")
+        {
+            $query = "INSERT INTO news VALUES (0, '" . $news->getTitolo() ."', '" . $news->getTesto() . "', NOW(), NULL, '" . $news->getIdUser() . "')";
+        }
+        else
+        {
+            $query = "INSERT INTO news VALUES (0, '" . $news->getTitolo() ."', '" . $news->getTesto() . "', NOW(), '" . $news->getLinkImmagine() . "', '" . $news->getIdUser() . "')";
+        }
+        
+        $this->conn->query($query);
+        
+
+
+        $query = "SELECT idNews FROM news WHERE idNews = LAST_INSERT_ID()";
+        $reuslt = $this->conn->query($query);
+        $idNews;
+        while ($row = $reuslt->fetch_assoc())
+        {
+            $idNews = $row["idNews"];
+        }
+
+
+        $categorie = explode("::", $news->getCategorie());
+        for ($i = 0; $i < count($categorie) - 1; $i ++) 
+        {
+            $query1 = "SELECT idCategoria FROM categorie WHERE nomeCategoria = '" . $categorie[$i] . "'";
+            $result = $this->conn->query($query1);
+            $idCategoria;
+            while($row = $result->fetch_assoc())
+            {
+                $idCategoria = $row["idCategoria"];
+            }
+
+            $query = "INSERT INTO appartengono VALUES (" . $idCategoria .", " . $idNews . ")";
+            $this->conn->query($query);
+        }
     }
 }
 ?>

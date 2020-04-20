@@ -155,7 +155,8 @@ $listaAutori = $db->getAutori();
             }
             ?>
             </div>
-            <div class="col-md-4 col-sm-12">
+        </div>
+        <div class="col-md-4 col-sm-12">
                 <h4 class="titolo">Categorie</h4>
                 <?php
                 for($i = 0; $i < count($listaCategorie); $i ++)
@@ -177,7 +178,6 @@ $listaAutori = $db->getAutori();
                 }
                 ?>
             </div>
-        </div>
     </div>
 
       

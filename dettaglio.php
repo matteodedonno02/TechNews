@@ -41,26 +41,6 @@ $db = new ManagerDB();
           <span class="navbar-toggler-icon"></span>
         </button>
         <?php
-        if(!isset($_SESSION["loggedUser"]))
-        {
-        ?>
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                    <a class="nav-link" href="index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="login.php">Login</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="registrazione.php">Registrazione</a>
-                    </li>
-                </ul>
-            </div>
-        <?php
-        }
-        else
-        {
             $utente = $_SESSION["loggedUser"];
             if($utente->getLevel() == 1)
             {
@@ -125,7 +105,6 @@ $db = new ManagerDB();
                 </div>
             <?php
             }
-        }
         ?>
       </nav>
 
@@ -190,8 +169,11 @@ $db = new ManagerDB();
                     <?php
                     }
                     ?>
-                    <p class="testo-news"><?php echo $news->getTesto(); ?></p>
+                    <div class="testo-news">
+                        <?php echo $news->getTesto(); ?>
+                    </div>
 
+                    <div style="float: left; width: 100%">
                     <h4 class="titolo bold">Sezione commenti</h4>
                     <form method="POST" action="gestioneUtenti.php">
                         <input type="hidden" name="cmd" value="aggiungiCommento">
@@ -230,6 +212,7 @@ $db = new ManagerDB();
                             </div>
                         </div>
                     </form>
+                    </div>
                 <?php
             break;
 
@@ -254,7 +237,7 @@ $db = new ManagerDB();
 
                 ?>
                     <h2 class="bold titolo" style="margin-bottom: 20px;">Tutte le news della cagetoria <?php echo $categoria ?></h2>
-                    <div class="blue-border">
+                    <div class="blue-border" style="padding: 10px;">
                 <?php
                 for($i = 0; $i < count($listaNewsDaCategoria); $i ++)
                 {
@@ -294,22 +277,21 @@ $db = new ManagerDB();
                     <div class="col-md-4 col-sm-12">
                         <div class="form-group">
                             <label class="bold font-medium titolo">Immagine profilo</label><br>
-                            <div class="image-profile photo-border">
                             <?php
                             if($autore->getLinkFoto() == "")
                             {
                             ?>
-                                <img src="assets/img/user.png">
+                                <div class="image-profile photo-border" style="background-image: url('assets/img/user.png');"></div>
+                                <!-- <img src="assets/img/user.png"> -->
                             <?php
                             }
                             else
                             {
                             ?>
-                                <img src="<?php echo $autore->getLinkFoto() ?>">
+                                <div class="image-profile photo-border" style="background-image: url('<?php echo $autore->getLinkFoto() ?>');"></div>
                             <?php
                             }
                             ?>
-                            </div>
                         </div>
                         <div class="form-group">
                             <label class="bold font-medium titolo">Nome </label>

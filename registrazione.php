@@ -20,6 +20,7 @@ if(isset($_SESSION["loggedUser"]))
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -73,19 +74,20 @@ if(isset($_SESSION["loggedUser"]))
         <fieldset>
             <div class="form-group">
                 <label for="txtNome">Nome</label>
-                <input type="text" required="true" class="form-control" id="txtNome" name="txtNome" aria-describedby="emailHelp">
+                <input type="text" required="true" class="form-control" id="txtNome" name="txtNome">
             </div>
             <div class="form-group">
                 <label for="txtCognome">Cognome</label>
-                <input type="text" required="true" class="form-control" id="txtCognome" name="txtCognome" aria-describedby="emailHelp">
+                <input type="text" required="true" class="form-control" id="txtCognome" name="txtCognome">
             </div>
             <div class="form-group">
-                <label for="txtLinkFoto">Foto profilo</label>
-                <input type="file" class="form-control-file" id="txtLinkFoto" name="txtLinkFoto" aria-describedby="fileHelp">
+                <label for="txtLinkFoto" class="btn btn-outline-primary">SCEGLI FOTO</label>
+                <label for="txtLinkFoto" id="nomeFile">Nessun file</label>
+                <input type="file" accept="image/*" class="form-control-file" id="txtLinkFoto" name="txtLinkFoto" aria-describedby="fileHelp">
             </div>
             <div class="form-group">
                 <label for="txtEmail">Email address</label>
-                <input type="email" required="true" class="form-control" id="txtEmail" name="txtEmail" aria-describedby="emailHelp">
+                <input type="email" required="true" class="form-control" id="txtEmail" name="txtEmail">
             </div>
             <div class="form-group">
                 <label for="txtPassword">Password</label>
@@ -104,5 +106,8 @@ if(isset($_SESSION["loggedUser"]))
         </div>
         </form>
       </div>
+
+
+      <script src="assets/js/main.js"></script>
 </body>
 </html>
