@@ -150,7 +150,7 @@ $listaAutori = $db->getAutori();
     <div class="container" style="margin-top: 80px; margin-bottom: 80px;">
     <h2 class="bold titolo" style="margin-bottom: 20px;">Tutte le news di Tech News</h2>
 
-    <form class="form-inline my-2 my-lg-0" action="notizie.php" method="POST">
+    <form autocomplete="off" class="form-inline my-2 my-lg-0" action="notizie.php" method="POST">
       <input class="form-control mr-sm-2" name="ricerca" type="text" placeholder="Cerca news">
       <button class="btn btn-secondary my-2 my-sm-0" type="submit">CERCA NEWS</button>
     </form>
@@ -162,7 +162,7 @@ $listaAutori = $db->getAutori();
             {
             ?>
                 <div class="news">
-                    <a href="dettaglio.php?tipo=news&id=<?php echo $listaNews[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNews[$i]->getTitolo() ?></h3></a>
+                    <a href="dettaglio.php?tipo=news&id=<?php echo $listaNews[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNews[$i]->getTitolo() ?> <label class="date"> <?php echo $listaNews[$i]->getDataPubblicazione() ?></label></h3></a>
 
 
                     <?php
@@ -181,7 +181,8 @@ $listaAutori = $db->getAutori();
             }
             ?>
             </div>
-            <div class="col-md-4 col-sm-12">
+        </div>
+        <div class="col-md-4 col-sm-12">
                 <h4 class="titolo">Categorie</h4>
                 <?php
                 for($i = 0; $i < count($listaCategorie); $i ++)
@@ -203,7 +204,6 @@ $listaAutori = $db->getAutori();
                 }
                 ?>
             </div>
-        </div>
     </div>
 </body>
 </html>
