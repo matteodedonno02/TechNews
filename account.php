@@ -2,6 +2,7 @@
 include "phpClass/ManagerDB.php";
 session_start();
 
+
 if(!isset($_SESSION["loggedUser"]))
 {
     header("location: index.php");
@@ -10,21 +11,6 @@ if(!isset($_SESSION["loggedUser"]))
 
 
 $db = new ManagerDB();
-$listaCategorie = $db->getCategorie();
-
-
-if(isset($_POST["ricerca"]))
-{
-    $ricerca = strtolower($_POST["ricerca"]);
-    $listaNews = $db->getNews($ricerca);
-}
-else
-{
-    $listaNews = $db->getNews("");
-}
-
-
-$listaAutori = $db->getAutori();
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -48,26 +34,6 @@ $listaAutori = $db->getAutori();
           <span class="navbar-toggler-icon"></span>
         </button>
         <?php
-        if(!isset($_SESSION["loggedUser"]))
-        {
-        ?>
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                    <a class="nav-link" href="index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="login.php">Login</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="registrazione.php">Registrazione</a>
-                    </li>
-                </ul>
-            </div>
-        <?php
-        }
-        else
-        {
             $utente = $_SESSION["loggedUser"];
             if($utente->getLevel() == 1)
             {
@@ -80,9 +46,9 @@ $listaAutori = $db->getAutori();
                                 <a class="nav-link" href="index.php">Home</a>
                             </div>
                         </li>
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <div class="icon-and-menu">
-                                <img class="icon active-icon" src="assets/img/news.png">
+                                <img class="icon unactive" src="assets/img/news.png">
                                 <a class="nav-link" href="notizie.php">Notizie</a>
                             </div>
                         </li>
@@ -106,16 +72,16 @@ $listaAutori = $db->getAutori();
             {
             ?>
                 <div class="collapse navbar-collapse" id="navbarColor01">
-                    <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <div class="icon-and-menu">
                                 <img class="icon unactive" src="assets/img/home.png">
                                 <a class="nav-link" href="index.php">Home</a>
                             </div>
                         </li>
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <div class="icon-and-menu">
-                                <img class="icon active-icon" src="assets/img/news.png">
+                                <img class="icon unactive" src="assets/img/news.png">
                                 <a class="nav-link" href="notizie.php">Notizie</a>
                             </div>
                         </li>
@@ -152,9 +118,9 @@ $listaAutori = $db->getAutori();
                                 <a class="nav-link" href="index.php">Home</a>
                             </div>
                         </li>
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <div class="icon-and-menu">
-                                <img class="icon active-icon" src="assets/img/news.png">
+                                <img class="icon unactive" src="assets/img/news.png">
                                 <a class="nav-link" href="notizie.php">Notizie</a>
                             </div>
                         </li>
@@ -186,65 +152,94 @@ $listaAutori = $db->getAutori();
                 </div>
             <?php
             }
-        }
         ?>
       </nav>
-    <div class="container" style="margin-top: 80px; margin-bottom: 80px;">
-    <h2 class="bold titolo" style="margin-bottom: 20px;">Tutte le news di Tech News</h2>
 
-    <form autocomplete="off" class="form-inline my-2 my-lg-0" action="notizie.php" method="POST">
-      <input class="form-control mr-sm-2" name="ricerca" type="text" placeholder="Cerca news">
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">CERCA NEWS</button>
-    </form>
 
+    <div class="container" style="margin-top: 40px;">
+        <?php
+        $temp = $db->getNewsDaAutore($utente->getId());
+        $listaNewsDaUtente = $temp[1];
+
+        
+        ?>
         <div class="row">
-            <div class="col-md-8 col-sm-12 blue-border">
-            <?php
-            for($i = 0; $i < count($listaNews); $i ++)
-            {
-            ?>
-                <div class="news">
-                    <a href="dettaglio.php?tipo=news&id=<?php echo $listaNews[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNews[$i]->getTitolo() ?> <label class="date"> <?php echo $listaNews[$i]->getDataPubblicazione() ?></label></h3></a>
-
-
+            <div class="col-md-4 col-sm-12">
+                <div class="form-group">
+                    <label class="bold font-medium titolo">Immagine profilo</label><br>
                     <?php
-                    for($j = 0; $j < count($listaNews[$i]->getCategorie()); $j ++)
+                    if($utente->getLinkFoto() == "")
                     {
                     ?>
-                        <small class="text-muted"><a href="dettaglio.php?tipo=cat&id=<?php echo $listaNews[$i]->getCategorie()[$j]->getId() ?>"><?php echo $listaNews[$i]->getCategorie()[$j]->getNome() ?></a></small><br>
+                        <div class="image-profile photo-border" style="background-image: url('assets/img/user.png');"></div>
+                        <!-- <img src="assets/img/user.png"> -->
+                    <?php
+                    }
+                    else
+                    {
+                    ?>
+                        <div class="image-profile photo-border" style="background-image: url('<?php echo $utente->getLinkFoto() ?>');"></div>
                     <?php
                     }
                     ?>
-
-
-                    <p class="testo-news"><?php echo strip_tags(substr($listaNews[$i]->getTesto(), 0, 200)) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaNews[$i]->getIdNews() ?>">Continua a leggere</a></p>
                 </div>
-            <?php
-            }
-            ?>
-        </div>
-        <div class="col-md-4 col-sm-12">
-                <h4 class="titolo">Categorie</h4>
-                <?php
-                for($i = 0; $i < count($listaCategorie); $i ++)
-                {
-                ?>
-                    <p class="lead">> <a href="dettaglio.php?tipo=cat&id=<?php echo $listaCategorie[$i]->getId(); ?>"><?php echo $listaCategorie[$i]->getNome(); ?></a></p>
-                <?php
-                }
-                ?>
-
-
-                <h4 class="titolo">Autori</h4>
-                <?php
-                for($i = 0; $i < count($listaAutori); $i ++)
-                {
-                ?>
-                    <p class="lead">> <a href="dettaglio.php?tipo=user&id=<?php echo $listaAutori[$i]->getId() ?>"><?php echo ($listaAutori[$i]->getNome() . " " . $listaAutori[$i]->getCognome()) ?></a></p>
-                <?php
-                }
-                ?>
+                <div class="form-group">
+                    <label class="bold font-medium titolo">Nome </label>
+                    <label class="font-medium"><?php echo $utente->getNome() ?></label>
+                </div>
+                <div class="form-group">
+                    <label class="bold font-medium titolo">Cognome </label>
+                    <label class="font-medium"><?php echo $utente->getCognome() ?></label>
+                </div>
+                <div class="form-group">
+                    <label class="bold font-medium titolo">Email </label>
+                    <label class="font-medium"><?php echo $utente->getEmail() ?></label>
+                </div>
+                <a href="modifica-utente.php"><button type="button" class="btn btn-outline-primary">MODIFICA ACCOUNT</button></a>
             </div>
+            <div class="col-md-8 col-sm-12 blue-border">
+            <?php
+                if($utente->getLevel() == 1)
+                {
+                ?>
+                    <label class="font-medium bold titolo">Sei un lettore quindi non puoi nè scrivere nè modificare le news</label>
+                <?php
+                }
+                else
+                {
+                    if(count($listaNewsDaUtente) == 0)
+                {
+                ?>
+                    <label class="font-medium bold titolo">Non hai ancora scritto nessuna news</label>
+                <?php
+                }
+
+
+                for($i = 0; $i < count($listaNewsDaUtente); $i ++)
+                {
+                ?>
+                    <div class="news">
+                        <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaUtente[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNewsDaUtente[$i]->getTitolo() ?> <label class="date"> <?php echo $listaNewsDaUtente[$i]->getDataPubblicazione() ?></label></h3></a>
+    
+    
+                        <?php
+                        for($j = 0; $j < count($listaNewsDaUtente[$i]->getCategorie()); $j ++)
+                        {
+                        ?>
+                            <small class="text-muted"><a href="dettaglio.php?tipo=cat&id=<?php echo $listaNewsDaUtente[$i]->getCategorie()[$j]->getId()  ?>"><?php echo $listaNewsDaUtente[$i]->getCategorie()[$j]->getNome() ?></a></small><br>
+                        <?php
+                        }
+                        ?>
+    
+    
+                        <p class="testo-news"><?php echo strip_tags(substr($listaNewsDaUtente[$i]->getTesto(), 0, 200)) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaUtente[$i]->getIdNews() ?>">Continua a leggere</a></p>
+                    </div>
+                <?php
+                }
+                }
+            ?>
+            </div>
+        </div>
     </div>
 </body>
 </html>

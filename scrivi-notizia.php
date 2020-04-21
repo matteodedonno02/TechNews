@@ -61,6 +61,12 @@ $listaCategorie = $db->getCategorie();
                         </li>
                         <li class="nav-item">
                             <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/user.svg">
+                                <a class="nav-link" href="account.php"><?php echo $utente->getEmail() ?></a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="icon-and-menu">
                                 <img class="icon unactive" src="assets/img/logout.png">
                                 <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
                             </div>
@@ -96,6 +102,12 @@ $listaCategorie = $db->getCategorie();
                             <div class="icon-and-menu">
                                 <img class="icon unactive" src="assets/img/admin.png">
                                 <a class="nav-link" href="admin/">Sezione amministrazione</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/user.svg">
+                                <a class="nav-link" href="account.php"><?php echo $utente->getEmail() ?></a>
                             </div>
                         </li>
                         <li class="nav-item">
