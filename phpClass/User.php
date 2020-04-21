@@ -106,5 +106,13 @@ class User
     {
         return $this->id . " " . $this->nome . " " . $this->cognome;
     }
+
+    
+    public function setLinkFoto($linkFoto)
+    {
+        $this->linkFoto = $linkFoto;
+
+        return $this;
+    }
 }
 ?>

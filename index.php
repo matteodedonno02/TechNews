@@ -34,13 +34,22 @@ $listaAutori = $db->getAutori();
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                    <a class="nav-link" href="index.php">Home</a>
+                        <div class="icon-and-menu">
+                            <img class="icon active-icon" src="assets/img/home.png">
+                            <a class="nav-link" href="index.php">Home</a>
+                        </div>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="login.php">Login</a>
+                        <div class="icon-and-menu">
+                            <img class="icon unactive" src="assets/img/enter.png">
+                            <a class="nav-link" href="login.php">Login</a>
+                        </div>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="registrazione.php">Registrazione</a>
+                        <div class="icon-and-menu">
+                            <img class="icon unactive" src="assets/img/register.svg">
+                            <a class="nav-link" href="registrazione.php">Registrazione</a>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -53,15 +62,24 @@ $listaAutori = $db->getAutori();
             {
             ?>
                 <div class="collapse navbar-collapse" id="navbarColor01">
-                    <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                        <a class="nav-link" href="index.php">Home</a>
+                            <div class="icon-and-menu">
+                                <img class="icon active-icon" src="assets/img/home.png">
+                                <a class="nav-link" href="index.php">Home</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="notizie.php">Notizie</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/news.png">
+                                <a class="nav-link" href="notizie.php">Notizie</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/logout.png">
+                                <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -73,16 +91,28 @@ $listaAutori = $db->getAutori();
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                        <a class="nav-link" href="index.php">Home</a>
+                            <div class="icon-and-menu">
+                                <img class="icon active-icon" src="assets/img/home.png">
+                                <a class="nav-link" href="index.php">Home</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="notizie.php">Notizie</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/news.png">
+                                <a class="nav-link" href="notizie.php">Notizie</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/write.png">
+                                <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/logout.png">
+                                <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -94,19 +124,34 @@ $listaAutori = $db->getAutori();
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                        <a class="nav-link" href="index.php">Home</a>
+                            <div class="icon-and-menu">
+                                <img class="icon active-icon" src="assets/img/home.png">
+                                <a class="nav-link" href="index.php">Home</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="notizie.php">Notizie</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/news.png">
+                                <a class="nav-link" href="notizie.php">Notizie</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/write.png">
+                                <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="admin/">Sezione amministrazione</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/admin.png">
+                                <a class="nav-link" href="admin/">Sezione amministrazione</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/logout.png">
+                                <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -149,12 +194,11 @@ $listaAutori = $db->getAutori();
                     ?>
 
 
-                    <p class="testo-news"><?php echo substr($listaUltimeNews[$i]->getTesto(), 0, 200) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaUltimeNews[$i]->getIdNews() ?>">Continua a leggere</a></p>
+                    <p class="testo-news"><?php echo strip_tags(substr($listaUltimeNews[$i]->getTesto(), 0, 200)) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaUltimeNews[$i]->getIdNews() ?>">Continua a leggere</a></p>
                 </div>
             <?php
             }
             ?>
-            </div>
         </div>
         <div class="col-md-4 col-sm-12">
                 <h4 class="titolo">Categorie</h4>

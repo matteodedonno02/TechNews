@@ -42,6 +42,8 @@ form
 .register
 {
     height: 538px;
+    position: relative !important;
+    margin-top: 20px;
 }
 nav
 {
@@ -171,4 +173,73 @@ nav
 .tox .tox-tbtn--select
 {
     display: none !important;
+}
+.icon
+{
+    width: 20px;
+}
+.accept-icon
+{
+    filter: invert(37%) sepia(83%) saturate(665%) hue-rotate(157deg) brightness(103%) contrast(89%);
+}
+.remove-icon
+{
+    filter: invert(36%) sepia(22%) saturate(4502%) hue-rotate(335deg) brightness(99%) contrast(106%);
+}
+.home-icon
+{
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+.title-icon
+{
+    width: 25px;
+}
+.unactive
+{
+    margin-top: 8px;
+    filter: invert(100%) sepia(0%) saturate(1%) hue-rotate(182deg) brightness(104%) contrast(100%);
+    opacity: 0.5;
+}
+.active-icon
+{
+    margin-top: 8px;
+    filter: invert(99%) sepia(0%) saturate(0%) hue-rotate(274deg) brightness(104%) contrast(101%);
+}
+.icon-and-menu
+{
+    text-align: center;
+}
+.nav-item .icon-and-menu a
+{
+    padding-top: 0px !important;
+}
+.active .icon-and-menu a
+{
+    color: #fff !important;
+}
+@media (min-width: 768px) 
+{
+    .sidebar
+    {
+        width: 15%;
+        height: 100%;
+        position: fixed;
+        display: table;
+        float: left;
+    }
+    .sidebar .navbar-nav
+    {
+        display: table;
+    }
+    .sidebar-container
+    {
+        margin-left: 15%;
+    }
 }

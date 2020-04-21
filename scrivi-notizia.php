@@ -42,16 +42,28 @@ $listaCategorie = $db->getCategorie();
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/home.png">
+                                <a class="nav-link" href="index.php">Home</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="notizie.php">Notizie</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/news.png">
+                                <a class="nav-link" href="notizie.php">Notizie</a>
+                            </div>
                         </li>
                         <li class="nav-item active">
-                        <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            <div class="icon-and-menu">
+                                <img class="icon active-icon" src="assets/img/write.png">
+                                <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/logout.png">
+                                <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -63,19 +75,34 @@ $listaCategorie = $db->getCategorie();
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/home.png">
+                                <a class="nav-link" href="index.php">Home</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="notizie.php">Notizie</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/news.png">
+                                <a class="nav-link" href="notizie.php">Notizie</a>
+                            </div>
                         </li>
                         <li class="nav-item active">
-                        <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            <div class="icon-and-menu">
+                                <img class="icon active-icon" src="assets/img/write.png">
+                                <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="admin/">Sezione amministrazione</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/admin.png">
+                                <a class="nav-link" href="admin/">Sezione amministrazione</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/logout.png">
+                                <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            </div>
                         </li>
                     </ul>
                 </div>

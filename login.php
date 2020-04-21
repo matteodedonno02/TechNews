@@ -32,15 +32,24 @@ if(isset($_SESSION["loggedUser"]))
         {
         ?>
             <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
+                        <div class="icon-and-menu">
+                            <img class="icon unactive" src="assets/img/home.png">
+                            <a class="nav-link" href="index.php">Home</a>
+                        </div>
                     </li>
                     <li class="nav-item active">
-                    <a class="nav-link" href="login.php">Login</a>
+                        <div class="icon-and-menu">
+                            <img class="icon active-icon" src="assets/img/enter.png">
+                            <a class="nav-link" href="login.php">Login</a>
+                        </div>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="registrazione.php">Registrazione</a>
+                        <div class="icon-and-menu">
+                            <img class="icon unactive" src="assets/img/register.svg">
+                            <a class="nav-link" href="registrazione.php">Registrazione</a>
+                        </div>
                     </li>
                 </ul>
             </div>

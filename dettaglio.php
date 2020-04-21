@@ -46,15 +46,24 @@ $db = new ManagerDB();
             {
             ?>
                 <div class="collapse navbar-collapse" id="navbarColor01">
-                    <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/home.png">
+                                <a class="nav-link" href="index.php">Home</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="notizie.php">Notizie</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/news.png">
+                                <a class="nav-link" href="notizie.php">Notizie</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/logout.png">
+                                <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -64,18 +73,30 @@ $db = new ManagerDB();
             {
             ?>
                 <div class="collapse navbar-collapse" id="navbarColor01">
-                    <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/home.png">
+                                <a class="nav-link" href="index.php">Home</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="notizie.php">Notizie</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/news.png">
+                                <a class="nav-link" href="notizie.php">Notizie</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/write.png">
+                                <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/logout.png">
+                                <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -87,19 +108,34 @@ $db = new ManagerDB();
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/home.png">
+                                <a class="nav-link" href="index.php">Home</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="notizie.php">Notizie</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/news.png">
+                                <a class="nav-link" href="notizie.php">Notizie</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/write.png">
+                                <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="admin/">Sezione amministrazione</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/admin.png">
+                                <a class="nav-link" href="admin/">Sezione amministrazione</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            <div class="icon-and-menu">
+                                <img class="icon unactive" src="assets/img/logout.png">
+                                <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -245,7 +281,7 @@ $db = new ManagerDB();
                     <div class="news">
                         <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaCategoria[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNewsDaCategoria[$i]->getTitolo() ?> <label class="date"> <?php echo $listaNewsDaCategoria[$i]->getDataPubblicazione() ?></label></h3></a>
 
-                        <p class="testo-news"><?php echo substr($listaNewsDaCategoria[$i]->getTesto(), 0, 300) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaCategoria[$i]->getIdNews() ?>">Continua a leggere</a></p>
+                        <p class="testo-news"><?php echo strip_tags(substr($listaNewsDaCategoria[$i]->getTesto(), 0, 300)) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaCategoria[$i]->getIdNews() ?>">Continua a leggere</a></p>
                     </div>
                 <?php
                 }
@@ -333,7 +369,7 @@ $db = new ManagerDB();
                                 ?>
             
             
-                                <p class="testo-news"><?php echo substr($listaNewsDaAutore[$i]->getTesto(), 0, 200) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaAutore[$i]->getIdNews() ?>">Continua a leggere</a></p>
+                                <p class="testo-news"><?php echo strip_tags(substr($listaNewsDaAutore[$i]->getTesto(), 0, 200)) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaAutore[$i]->getIdNews() ?>">Continua a leggere</a></p>
                             </div>
                         <?php
                         }

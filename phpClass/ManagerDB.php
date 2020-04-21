@@ -93,14 +93,7 @@ class ManagerDB
     public function getNews($ricerca)
     {
         $listaNews = array();
-        if($ricerca != "")
-        {
-            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news WHERE LOWER(titolo) LIKE '%" . $ricerca . "%' OR LOWER(testo) LIKE '%" . $ricerca . "%' ORDER BY idNews DESC";
-        }
-        else
-        {
-            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news ORDER BY idNews DESC";
-        }
+        $ricerca != "" ? $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news WHERE LOWER(titolo) LIKE '%" . $ricerca . "%' OR LOWER(testo) LIKE '%" . $ricerca . "%' ORDER BY idNews DESC" : $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news ORDER BY idNews DESC";
         
         $result = $this->conn->query($query);
         while($row = $result->fetch_assoc())
@@ -224,7 +217,7 @@ class ManagerDB
     public function getAutori()
     {
         $listaAutori = array();
-        $query = "SELECT * FROM users WHERE level = 2 AND aut = 'Y'";
+        $query = "SELECT * FROM users WHERE level > 1 AND aut = 'Y'";
         $result = $this->conn->query($query);
         while($row = $result->fetch_assoc())
         {
@@ -296,6 +289,93 @@ class ManagerDB
             $query = "INSERT INTO appartengono VALUES (" . $idCategoria .", " . $idNews . ")";
             $this->conn->query($query);
         }
+    }
+
+
+    public function getUtentiDaAccettare()
+    {
+        $listaUtentiDaAccettare = array();
+        $query = "SELECT * FROM users WHERE aut = 'N'";
+        $result = $this->conn->query($query);
+
+
+        while($row = $result->fetch_assoc())
+        {
+            array_push($listaUtentiDaAccettare, new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"]));    
+        }
+
+
+        return $listaUtentiDaAccettare;
+    }
+
+
+    public function accettaUtente($id)
+    {
+        $query = "UPDATE users SET aut = 'Y' WHERE idUSer = " . $id;
+        $this->conn->query($query);  
+    }
+
+
+    public function getUtenti($ricerca)
+    {
+        $listaUtenti = array();
+        $ricerca == "" ? $query = "SELECT * FROM users WHERE aut = 'Y'" : $query = "SELECT * FROM users WHERE LOWER(nome) LIKE '%" . $ricerca . "%' OR LOWER(cognome) LIKE '%" . $ricerca . "%' OR LOWER(email) LIKE '%" . $ricerca . "%' AND aut = 'Y'";
+        $result = $this->conn->query($query);
+
+
+        while($row = $result->fetch_assoc())
+        {
+            array_push($listaUtenti, new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"]));    
+        }
+
+
+        return $listaUtenti;
+    }
+
+
+    public function bloccaUtente($id)
+    {
+        $query = "UPDATE users SET aut = 'N' WHERE idUSer = " . $id;
+        $this->conn->query($query);  
+    }
+
+
+    public function getUtente($id)
+    {
+        $query = "SELECT * FROM users WHERE idUser = " . $id;
+        $result = $this->conn->query($query);
+        while($row = $result->fetch_assoc())
+        {
+            return new User($row["idUser"], $row["nome"], $row["cognome"], $row["linkFoto"], $row["email"], $row["password"], $row["level"], $row["aut"]);
+        }
+
+
+        return null;
+    }
+
+
+    public function modificaUtente($utente)
+    {
+        if($utente->getId() == 58)
+        {
+            $utente->setLevel(3);
+        }
+
+
+        if($utente->getLinkFoto() != "")
+        {
+            $query = "UPDATE users SET linkFoto = '" . $utente->getLinkFoto() . "' WHERE idUser = " . $utente->getId();
+            $this->conn->query($query);
+        }
+
+
+        $utente->getPassword() == "" ?
+        $query = "UPDATE users SET nome = '" . $utente->getNome() . "', cognome = '" . $utente->getCognome() . "', email = '" . $utente->getEmail() . "', level = " . $utente->getLevel() . " WHERE idUser = " . $utente->getId():
+        $query = "UPDATE users SET password = md5('" . $utente->getPassword() . "') , nome = '" . $utente->getNome() . "', cognome = '" . $utente->getCognome() . "', email = '" . $utente->getEmail() . "', level = " . $utente->getLevel() . " WHERE idUser = " . $utente->getId();
+
+
+        $this->conn->query($query);
+        echo "FINITO \n";
     }
 }
 ?>
