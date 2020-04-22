@@ -422,5 +422,38 @@ class ManagerDB
         $query = "DELETE FROM news WHERE idNews = " . $id;
         $this->conn->query($query);
     }
+
+
+    public function cancellaCategoria($id)
+    {
+        $query= "SELECT * FROM appartengono WHERE idCategoria = " .$id;
+        $result = $this->conn->query($query);
+        if(mysqli_num_rows($result) > 0)
+        {
+            return false;
+        }
+        else
+        {
+            $query = "DELETE FROM categorie WHERE idCategoria = " .$id;
+            $this->conn->query($query);
+            return true;
+        }
+    }
+
+
+    public function aggiungiCategoria($testoCategoria)
+    {
+        $query = "SELECT * FROM categorie WHERE LOWER(nomeCategoria) = LOWER('" . $testoCategoria ."')";
+        $result = $this->conn->query($query);
+        if(mysqli_num_rows($result) > 0)
+        {
+            return false;
+        }
+
+
+        $query = "INSERT INTO categorie VALUES(0, '" . $testoCategoria ."')";
+        $this->conn->query($query);
+        return true;
+    }
 }
 ?>

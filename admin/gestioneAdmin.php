@@ -81,6 +81,12 @@ else
             $db->modificaNews(new News($_POST["id"], $_POST["txtTitolo"], $_POST["txtNews"], null, $linkFoto, $_SESSION["loggedUser"]->getId(), $_POST["txtCategorie"]));
             header("location: index.php?sezione=ln");
         break;
+        case "aggiungiCategoria":
+            $result = $db->aggiungiCategoria($_POST["txtNuovaCategoria"]);
+            $result = $result ? "true" : "false";
+            echo $result;
+            header("location: index.php?sezione=lc&aresult=" . $result);
+        break;
     }
 }
 
@@ -106,6 +112,11 @@ else
         case "cancellaNews":
             $db->cancellaNews($_GET["id"]);
             header("location: " . $_SERVER['HTTP_REFERER']);
+        break;
+        case "cancellaCategoria":
+            $result = $db->cancellaCategoria($_GET["id"]);
+            $result = $result ? "true" : "false";
+            header("location: index.php?sezione=lc&cresult=" . $result);
         break;
     }
 }
