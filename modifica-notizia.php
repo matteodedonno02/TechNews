@@ -1,16 +1,33 @@
 <?php
 include "phpClass/ManagerDB.php";
 session_start();
-
-
-if(!isset($_SESSION["loggedUser"]))
+if(!isset($_SESSION["loggedUser"]) || $_SESSION["loggedUser"]->getLevel() == 1)
 {
+    echo "CIAO";
     header("location: index.php");
     return;
 }
 
 
+if(!isset($_POST["id"]))
+{
+    header("location: index.php");
+    return;
+}
+
 $db = new ManagerDB();
+$listaCategorie = $db->getCategorie();
+$temp = $db->getNewsDaId($_POST["id"]);
+$news = $temp[0];
+$categorieScelte = $news->getCategorie();
+for ($i=0; $i < count($categorieScelte); $i++) 
+{ 
+    if($key = array_search($categorieScelte[$i], $listaCategorie))
+    {
+        unset($listaCategorie[$key]);
+    }
+}
+$listaCategorie = array_values($listaCategorie);
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -26,6 +43,8 @@ $db = new ManagerDB();
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -35,44 +54,11 @@ $db = new ManagerDB();
         </button>
         <?php
             $utente = $_SESSION["loggedUser"];
-            if($utente->getLevel() == 1)
+            if($utente->getLevel() == 2)
             {
             ?>
                 <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <div class="icon-and-menu">
-                                <img class="icon unactive" src="assets/img/home.png">
-                                <a class="nav-link" href="index.php">Home</a>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <div class="icon-and-menu">
-                                <img class="icon unactive" src="assets/img/news.png">
-                                <a class="nav-link" href="notizie.php">Notizie</a>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <div class="icon-and-menu">
-                                <img class="icon unactive" src="assets/img/user.svg">
-                                <a class="nav-link" href="account.php"><?php echo $utente->getEmail() ?></a>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <div class="icon-and-menu">
-                                <img class="icon unactive" src="assets/img/logout.png">
-                                <a class="nav-link" href="gestioneUtenti.php?cmd=logout">Log out</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            <?php
-            }
-            else if($utente->getLevel() == 2)
-            {
-            ?>
-                <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <div class="icon-and-menu">
                                 <img class="icon unactive" src="assets/img/home.png">
@@ -156,97 +142,81 @@ $db = new ManagerDB();
       </nav>
 
 
+    <script>
+      var editor = tinymce.init(
+        {
+            selector: "#txtNews",
+            setup: function (editor) 
+            {
+                editor.on('change', function () 
+                {
+                    tinymce.triggerSave();
+                });
+            }
+        });
+    </script>
+
+    
+
     <div class="container" style="margin-top: 40px;">
-        <?php
-        $temp = $db->getNewsDaAutore($utente->getId());
-        $listaNewsDaUtente = $temp[1];
 
-        
-        ?>
-        <div class="row">
-            <div class="col-md-4 col-sm-12">
-                <div class="form-group">
-                    <label class="bold font-medium titolo">Immagine profilo</label><br>
+
+    <h2 class="bold titolo">Modifica notizia</h2>
+        <form autocomplete="off" method="POST" action="gestioneUtenti.php" enctype="multipart/form-data" onsubmit="return checkFormNews()">
+            <input type="hidden" name="cmd" value="modificaNews">
+            <input type="hidden" name="id" value="<?php echo $news->getIdNews() ?>">
+            <div class="form-group">
+                <label for="txtTitolo">Titolo</label>
+                <input type="text" class="form-control" id="txtTitolo" name="txtTitolo" value="<?php echo $news->getTitolo() ?>">
+            </div>
+            <div class="form-group">
+                <label for="txtLevel">Categorie rimanenti</label>
+                <div class="categorie-rimanenti">
                     <?php
-                    if($utente->getLinkFoto() == "")
+                    $j = 1;
+                    for($i = 0; $i < count($listaCategorie); $i ++)
                     {
                     ?>
-                        <div class="image-profile photo-border" style="background-image: url('assets/img/user.png');"></div>
-                        <!-- <img src="assets/img/user.png"> -->
+                        <button id="categoria<?php echo $i ?>" type="button" class="btn btn-outline-primary categoria" onclick="aggiungiCategoria('categoria<?php echo $i ?>', '+ <?php echo $listaCategorie[$i]->getNome() ?>')">+ <?php echo $listaCategorie[$i]->getNome() ?></button>
                     <?php
-                    }
-                    else
-                    {
-                    ?>
-                        <div class="image-profile photo-border" style="background-image: url('<?php echo $utente->getLinkFoto() ?>');"></div>
-                    <?php
+                        $j ++;
                     }
                     ?>
                 </div>
-                <div class="form-group">
-                    <label class="bold font-medium titolo">Nome </label>
-                    <label class="font-medium"><?php echo $utente->getNome() ?></label>
-                </div>
-                <div class="form-group">
-                    <label class="bold font-medium titolo">Cognome </label>
-                    <label class="font-medium"><?php echo $utente->getCognome() ?></label>
-                </div>
-                <div class="form-group">
-                    <label class="bold font-medium titolo">Email </label>
-                    <label class="font-medium"><?php echo $utente->getEmail() ?></label>
-                </div>
-                <a href="modifica-utente.php"><button type="button" class="btn btn-outline-primary">MODIFICA ACCOUNT</button></a>
             </div>
-            <div class="col-md-8 col-sm-12 blue-border">
-            <?php
-                if($utente->getLevel() == 1)
+            <div class="form-group">
+                Categorie scelte
+                <div class="categorie-scelte form-control" style="height: 60px; line-height: 44px;">
+                <?php
+                $valueCategorie = "";
+                for ($i=0; $i < count($categorieScelte); $i++) 
                 {
                 ?>
-                    <label class="font-medium bold titolo">Sei un lettore quindi non puoi nè scrivere nè modificare le news</label>
+                    <button id="<?php echo $j ?>" type="button" class="btn btn-outline-primary categoria-scelta" onclick="rimuoviCategoria('<?php echo $j ?>', '- <?php echo $categorieScelte[$i]->getNome() ?>')">- <?php echo $categorieScelte[$i]->getNome() ?></button>
                 <?php
+                    $valueCategorie .= $categorieScelte[$i]->getNome() . "::";
+                    $j ++;
                 }
-                else
-                {
-                    if(count($listaNewsDaUtente) == 0)
-                {
                 ?>
-                    <label class="font-medium bold titolo">Non hai ancora scritto nessuna news</label>
-                <?php
-                }
-
-
-                for($i = 0; $i < count($listaNewsDaUtente); $i ++)
-                {
-                ?>
-                    <div class="news">
-                        <form id="modifica-news-form<?php echo $i?>" action="modifica-notizia.php" method="POST">
-                            <input type="hidden" name="id" value="<?php echo $listaNewsDaUtente[$i]->getIdNews() ?>">
-                            <img id="<?php echo $i?>" class="send-icon icon accept-icon" src="assets/img/edit.png">
-                        </form>
-                        <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaUtente[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNewsDaUtente[$i]->getTitolo() ?> <label class="date"> <?php echo $listaNewsDaUtente[$i]->getDataPubblicazione() ?></label></h3></a>
-    
-    
-                        <?php
-                        for($j = 0; $j < count($listaNewsDaUtente[$i]->getCategorie()); $j ++)
-                        {
-                        ?>
-                            <small class="text-muted"><a href="dettaglio.php?tipo=cat&id=<?php echo $listaNewsDaUtente[$i]->getCategorie()[$j]->getId()  ?>"><?php echo $listaNewsDaUtente[$i]->getCategorie()[$j]->getNome() ?></a></small><br>
-                        <?php
-                        }
-                        ?>
-    
-    
-                        <p class="testo-news"><?php echo strip_tags(substr($listaNewsDaUtente[$i]->getTesto(), 0, 200)) ?>... <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaUtente[$i]->getIdNews() ?>">Continua a leggere</a></p>
-                    </div>
-                <?php
-                }
-                }
-            ?>
+                </div>
+                <input type="hidden" id="txtCategorie" name="txtCategorie" value="<?php echo $valueCategorie?>">
             </div>
-        </div>
+            <div class="form-group">
+                <label for="txtLinkFoto" class="btn btn-outline-primary">SCEGLI FOTO NOTIZIA</label>
+                <label for="txtLinkFoto" id="nomeFile"><?php echo explode("/", $news->getLinkImmagine())[count(explode("/", $news->getLinkImmagine())) - 1] ?></label>
+                <input type="file" accept="image/*" class="form-control-file" id="txtLinkFoto" name="txtLinkFoto" aria-describedby="fileHelp">
+            </div>
+            <textarea id="txtNews" name="txtNews">
+                <?php echo $news->getTesto() ?>
+            </textarea>
+            <div class="buttons-field">
+                <button type="submit" class="btn btn-outline-primary" style="margin-top: 20px;">MODIFICA</button>
+            </div>
+        </form>
     </div>
 
 
+    <script id="scriptCategorie" src="assets/js/selezioneCategorie.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>

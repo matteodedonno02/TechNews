@@ -377,5 +377,39 @@ class ManagerDB
         $this->conn->query($query);
         echo "FINITO \n";
     }
+
+
+    public function modificaNews($news)
+    {
+        if($news->getLinkImmagine() != "")
+        {
+            $query = "UPDATE news SET linkImmagine = '" . $news->getLinkImmagine() . "' WHERE idNews = " . $news->getIdNews();
+            $this->conn->query($query);
+        }
+
+
+        $query = "DELETE FROM appartengono WHERE idNews = " . $news->getIdNews();
+        $this->conn->query($query);
+
+
+        $categorie = explode("::", $news->getCategorie());
+        for ($i = 0; $i < count($categorie) - 1; $i ++) 
+        {
+            $query1 = "SELECT idCategoria FROM categorie WHERE nomeCategoria = '" . $categorie[$i] . "'";
+            $result = $this->conn->query($query1);
+            $idCategoria;
+            while($row = $result->fetch_assoc())
+            {
+                $idCategoria = $row["idCategoria"];
+            }
+
+            $query = "INSERT INTO appartengono VALUES (" . $idCategoria .", " . $news->getIdNews() . ")";
+            $this->conn->query($query);
+        }
+
+
+        $query = "UPDATE news SET titolo = '" . $news->getTitolo() ."', testo = '" . $news->getTesto() ."' WHERE idNews = " . $news->getIdNews();
+        $this->conn->query($query);
+    }
 }
 ?>

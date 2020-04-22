@@ -7,6 +7,12 @@ $("#txtLinkFoto").change(function(e)
 });
 
 
+$(".send-icon").click(function(event)
+{
+    $("#modifica-news-form" + event.target.id).submit();
+});
+
+
 function checkFormNews()
 {
     if($("#txtTitolo").val() == "")
