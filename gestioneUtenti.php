@@ -194,5 +194,10 @@ switch ($cmd)
         $db->modificaNews(new News($_POST["id"], $_POST["txtTitolo"], $_POST["txtNews"], null, $linkFoto, $_SESSION["loggedUser"]->getId(), $_POST["txtCategorie"]));
         header("location: account.php");
     break;
+    case "cancellaNews":
+        echo $_POST["id"];
+        $db->cancellaNews($_POST["id"]);
+        header("location: account.php");
+    break;
 }
 ?>

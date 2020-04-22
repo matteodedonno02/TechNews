@@ -7,9 +7,15 @@ $("#txtLinkFoto").change(function(e)
 });
 
 
-$(".send-icon").click(function(event)
+$(".modify-icon").click(function(event)
 {
     $("#modifica-news-form" + event.target.id).submit();
+});
+
+
+$(".delete-icon").click(function(event)
+{
+    $("#cancella-news-form" + event.target.id).submit();
 });
 
 

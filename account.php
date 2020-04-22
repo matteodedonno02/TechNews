@@ -52,9 +52,9 @@ $db = new ManagerDB();
                                 <a class="nav-link" href="notizie.php">Notizie</a>
                             </div>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <div class="icon-and-menu">
-                                <img class="icon unactive" src="assets/img/user.svg">
+                                <img class="icon active-icon" src="assets/img/user.svg">
                                 <a class="nav-link" href="account.php"><?php echo $utente->getEmail() ?></a>
                             </div>
                         </li>
@@ -91,9 +91,9 @@ $db = new ManagerDB();
                                 <a class="nav-link" href="scrivi-notizia.php">Scrivi Notizia</a>
                             </div>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <div class="icon-and-menu">
-                                <img class="icon unactive" src="assets/img/user.svg">
+                                <img class="icon active-icon" src="assets/img/user.svg">
                                 <a class="nav-link" href="account.php"><?php echo $utente->getEmail() ?></a>
                             </div>
                         </li>
@@ -136,9 +136,9 @@ $db = new ManagerDB();
                                 <a class="nav-link" href="admin/">Sezione amministrazione</a>
                             </div>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <div class="icon-and-menu">
-                                <img class="icon unactive" src="assets/img/user.svg">
+                                <img class="icon active-icon" src="assets/img/user.svg">
                                 <a class="nav-link" href="account.php"><?php echo $utente->getEmail() ?></a>
                             </div>
                         </li>
@@ -219,10 +219,20 @@ $db = new ManagerDB();
                 {
                 ?>
                     <div class="news">
-                        <form id="modifica-news-form<?php echo $i?>" action="modifica-notizia.php" method="POST">
-                            <input type="hidden" name="id" value="<?php echo $listaNewsDaUtente[$i]->getIdNews() ?>">
-                            <img id="<?php echo $i?>" class="send-icon icon accept-icon" src="assets/img/edit.png">
-                        </form>
+                        <div style="display: flex;">
+                            <form id="modifica-news-form<?php echo $i?>" action="modifica-notizia.php" method="POST" style="width: 20px">
+                                <input type="hidden" name="id" value="<?php echo $listaNewsDaUtente[$i]->getIdNews() ?>">
+                                <img id="<?php echo $i?>" class="modify-icon icon accept-icon" src="assets/img/edit.png">
+                            </form>
+                            <form id="cancella-news-form<?php echo $i?>" action="gestioneUtenti.php" method="POST">
+                                <input type="hidden" name="cmd" value="cancellaNews">
+                                <input type="hidden" name="id" value="<?php echo $listaNewsDaUtente[$i]->getIdNews() ?>">
+                                <img id="<?php echo $i?>" class="delete-icon icon remove-icon" src="assets/img/close.png">
+                            </form>
+                        </div>
+                        
+
+                        
                         <a href="dettaglio.php?tipo=news&id=<?php echo $listaNewsDaUtente[$i]->getIdNews() ?>"><h3 class="bold titolo"><?php echo $listaNewsDaUtente[$i]->getTitolo() ?> <label class="date"> <?php echo $listaNewsDaUtente[$i]->getDataPubblicazione() ?></label></h3></a>
     
     

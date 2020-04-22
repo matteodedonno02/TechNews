@@ -419,6 +419,9 @@ class ManagerDB
         $this->conn->query($query);
 
 
+        $query = "DELETE FROM commenti WHERE idNews = " . $id;
+        $this->conn->query($query);
+
         $query = "DELETE FROM news WHERE idNews = " . $id;
         $this->conn->query($query);
     }
