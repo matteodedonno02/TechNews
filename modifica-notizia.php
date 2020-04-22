@@ -3,7 +3,6 @@ include "phpClass/ManagerDB.php";
 session_start();
 if(!isset($_SESSION["loggedUser"]) || $_SESSION["loggedUser"]->getLevel() == 1)
 {
-    echo "CIAO";
     header("location: index.php");
     return;
 }

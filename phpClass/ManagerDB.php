@@ -411,5 +411,16 @@ class ManagerDB
         $query = "UPDATE news SET titolo = '" . $news->getTitolo() ."', testo = '" . $news->getTesto() ."' WHERE idNews = " . $news->getIdNews();
         $this->conn->query($query);
     }
+
+
+    public function cancellaNews($id)
+    {
+        $query = "DELETE FROM appartengono WHERE idNews = " . $id;
+        $this->conn->query($query);
+
+
+        $query = "DELETE FROM news WHERE idNews = " . $id;
+        $this->conn->query($query);
+    }
 }
 ?>

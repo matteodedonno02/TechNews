@@ -204,12 +204,28 @@ else
 
             if(count($listaUtenti) == 0)
             {
-            ?>
-                <div class="alert alert-dismissible alert-danger">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>Cosa sta succedendo?</strong> Al momento non ci sono utenti.
-                </div>
-            <?php
+                if(!isset($_POST["ricerca"]))
+                {
+                ?>
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Cosa sta succedendo?</strong> Al momento non ci sono utenti.
+                    </div>
+                <?php
+                }
+                else
+                {
+                ?>
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Ops!</strong> Non ci sono utenti che rispecchiano la tua ricerca.
+                    </div>
+                    <form autocomplete="off" class="form-inline my-2 my-lg-0" action="index.php?sezione=lu" method="POST">
+                        <input class="form-control mr-sm-2" name="ricerca" type="text" placeholder="Cerca utente">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">CERCA UTENTE</button>
+                    </form>
+                <?php
+                }
             }
             else
             {
@@ -239,6 +255,91 @@ else
                                 <td><?php echo $listaUtenti[$i]->getLevel() == 1 ? "Lettore" : "Scrittore" ?></td>
                                 <td><a href="modifica-utente.php?id=<?php echo $listaUtenti[$i]->getId() ?>"><img class="icon accept-icon" src="../assets/img/edit.png"></a></td>
                                 <td><a href="gestioneAdmin.php?cmd=bloccaUtente&id=<?php echo $listaUtenti[$i]->getId() ?>"><img class="icon remove-icon" src="../assets/img/close.png"></a></td>
+                            </tr> 
+                        <?php
+                        }
+                        ?>
+                    </table>
+                </div>
+            <?php
+            }
+        }
+        else if($sezione == "ln")
+        {
+        ?>
+            <h2 class="bold titolo" style="margin-bottom: 20px;">Sezione amministrazione di TechNews <img class="accept-icon title-icon" src="../assets/img/wrench.png"></h2>
+        <?php
+            if(isset($_POST["ricerca"]))
+            {
+                $listaNews = $db->getNews($_POST["ricerca"]);
+            }
+            else
+            {
+                $listaNews = $db->getNews("");
+            }
+
+            if(count($listaNews) == 0)
+            {
+                if(!isset($_POST["ricerca"]))
+                {
+                ?>
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Cosa sta succedendo?</strong> Al momento non ci sono news.
+                    </div>
+                <?php
+                }
+                else
+                {
+                ?>
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Ops!</strong> Non esistono news che rispecchiano la tua ricerca.
+                    </div>
+                    <form autocomplete="off" class="form-inline my-2 my-lg-0" action="index.php?sezione=ln" method="POST">
+                        <input class="form-control mr-sm-2" name="ricerca" type="text" placeholder="Cerca news">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">CERCA NEWS</button>
+                    </form>
+                <?php
+                }
+            }
+            else
+            {
+            ?>
+                <form autocomplete="off" class="form-inline my-2 my-lg-0" action="index.php?sezione=ln" method="POST">
+                    <input class="form-control mr-sm-2" name="ricerca" type="text" placeholder="Cerca news">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">CERCA NEWS</button>
+                </form>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <td class="titolo bold">Titolo</td>
+                            <td class="titolo bold">Categorie</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <?php
+                        for($i = 0; $i < count($listaNews); $i ++)
+                        {
+                            $categorie = $listaNews[$i]->getCategorie();
+                        ?>
+                            <tr>
+                                <td><?php echo $listaNews[$i]->getTitolo() ?></td>
+                                <td>
+                                    <?php
+                                    for ($j=0; $j < count($categorie); $j++) 
+                                    {
+                                        if($j == count($categorie) - 1)
+                                        {
+                                            echo $categorie[$j]->getNome();
+                                            continue;
+                                        }
+                                        echo $categorie[$j]->getNome() . "<br>";
+                                    }
+                                    ?>
+                                </td>
+                                <td><a href="modifica-notizia.php?id=<?php echo $listaNews[$i]->getIdNews() ?>"><img class="icon accept-icon" src="../assets/img/edit.png"></a></td>
+                                <td><a href="gestioneAdmin.php?cmd=cancellaNews&id=<?php echo $listaNews[$i]->getIdNews() ?>"><img class="icon remove-icon" src="../assets/img/close.png"></a></td>
                             </tr> 
                         <?php
                         }

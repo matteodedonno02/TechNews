@@ -50,6 +50,37 @@ else
             $db->modificaUtente(new User($id, $nome, $cognome, $linkFoto, $email, $password, $level, null));
             header("location: index.php?sezione=lu");
         break;
+        case "modificaNews":
+            $linkFoto = "";
+    
+    
+            if (isset($_FILES["txtLinkFoto"]) || !is_uploaded_file($_FILES["txtLinkFoto"]["tmp_name"])) 
+            {
+                define ("SITE_ROOT", realpath(dirname(__FILE__)));
+                $uploaddir = SITE_ROOT . "/assets/img/newsImg/";
+    
+    
+                $photo_tmp = $_FILES["txtLinkFoto"]["tmp_name"];
+                $photo_name = $_FILES["txtLinkFoto"]["name"];
+                if($photo_name == "")
+                {
+                    $linkFoto = "";
+                }
+                else
+                {
+                    if(!file_exists($uploaddir))
+                    {
+                        mkdir($uploaddir);
+                    }
+                    move_uploaded_file($photo_tmp, $uploaddir . $photo_name);
+                    $linkFoto = "assets/img/newsImg/" . $photo_name;
+                }
+            }
+    
+    
+            $db->modificaNews(new News($_POST["id"], $_POST["txtTitolo"], $_POST["txtNews"], null, $linkFoto, $_SESSION["loggedUser"]->getId(), $_POST["txtCategorie"]));
+            header("location: index.php?sezione=ln");
+        break;
     }
 }
 
@@ -70,6 +101,10 @@ else
         break;
         case "bloccaUtente":
             $db->bloccaUtente($_GET["id"]);
+            header("location: " . $_SERVER['HTTP_REFERER']);
+        break;
+        case "cancellaNews":
+            $db->cancellaNews($_GET["id"]);
             header("location: " . $_SERVER['HTTP_REFERER']);
         break;
     }
