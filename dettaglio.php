@@ -290,7 +290,7 @@ $db = new ManagerDB();
 
 
                 ?>
-                    <h2 class="bold titolo" style="margin-bottom: 20px;">Tutte le news della cagetoria <?php echo $categoria ?></h2>
+                    <h2 class="bold titolo" style="margin-bottom: 20px;">Tutte le news della categoria <?php echo $categoria ?></h2>
                     <div class="blue-border" style="padding: 10px;">
                 <?php
                 for($i = 0; $i < count($listaNewsDaCategoria); $i ++)

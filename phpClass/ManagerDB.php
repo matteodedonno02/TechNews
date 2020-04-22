@@ -69,7 +69,7 @@ class ManagerDB
     public function getUltimeNews()
     {
         $listaUltimeNews = array();
-        $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news ORDER BY idNews DESC LIMIT 3";
+        $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE u.aut = 'Y' ORDER BY n.idNews DESC LIMIT 3";
         $result = $this->conn->query($query);
         while($row = $result->fetch_assoc())
         {
@@ -93,7 +93,7 @@ class ManagerDB
     public function getNews($ricerca)
     {
         $listaNews = array();
-        $ricerca != "" ? $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news WHERE LOWER(titolo) LIKE '%" . $ricerca . "%' OR LOWER(testo) LIKE '%" . $ricerca . "%' ORDER BY idNews DESC" : $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news ORDER BY idNews DESC";
+        $ricerca != "" ? $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE u.aut = 'Y' AND (LOWER(n.titolo) LIKE '%" . $ricerca . "%' OR LOWER(n.testo) LIKE '%" . $ricerca . "%') ORDER BY n.idNews DESC" : $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE u.aut = 'Y' ORDER BY n.idNews DESC";
         
         $result = $this->conn->query($query);
         while($row = $result->fetch_assoc())
@@ -119,7 +119,7 @@ class ManagerDB
     {
         if(is_numeric($id))
         {
-            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE n.idNews = " . $id;
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM news n INNER JOIN users u ON n.idUser = u.idUser WHERE u.aut = 'Y' AND n.idNews = " . $id;
             $result = $this->conn->query($query);
             if(mysqli_num_rows($result) == 0)
             {
@@ -163,7 +163,7 @@ class ManagerDB
                 $categoria = $row["nomeCategoria"];
             }
 
-            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM (news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE c.idCategoria = " . $id . " ORDER BY n.idNews DESC";
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM ((news n INNER JOIN appartengono a ON n.idNews = a.idNews) INNER JOIN users u ON n.idUser = u.idUser) INNER JOIN categorie c ON c.idCategoria = a.idCategoria WHERE u.aut = 'Y' AND c.idCategoria = " . $id . " ORDER BY n.idNews DESC";
             $result = $this->conn->query($query);
             while($row = $result->fetch_assoc())
             {
@@ -193,7 +193,7 @@ class ManagerDB
 
 
             
-            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM users u INNER JOIN news n ON u.idUser = n.idUser WHERE u.idUser = " . $id . " ORDER BY n.idNews DESC";
+            $query = "SELECT *, DATE_FORMAT(dataPubblicazione, '%d/%m/%Y') as dataFormattata FROM users u INNER JOIN news n ON u.idUser = n.idUser WHERE u.aut = 'Y' AND u.idUser = " . $id . " ORDER BY n.idNews DESC";
             $result = $this->conn->query($query);
             while($row = $result->fetch_assoc())
             {

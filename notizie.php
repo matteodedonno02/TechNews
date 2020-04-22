@@ -229,7 +229,7 @@ $listaAutori = $db->getAutori();
                 for($i = 0; $i < count($listaCategorie); $i ++)
                 {
                 ?>
-                    <p class="lead">> <a href="dettaglio.php?tipo=cat&id=<?php echo $listaCategorie[$i]->getId(); ?>"><?php echo $listaCategorie[$i]->getNome(); ?></a></p>
+                    <p class="lead"><img src="assets/img/arrow.png" style="width: 10px;"> <a href="dettaglio.php?tipo=cat&id=<?php echo $listaCategorie[$i]->getId(); ?>"><?php echo $listaCategorie[$i]->getNome(); ?></a></p>
                 <?php
                 }
                 ?>
@@ -240,7 +240,7 @@ $listaAutori = $db->getAutori();
                 for($i = 0; $i < count($listaAutori); $i ++)
                 {
                 ?>
-                    <p class="lead">> <a href="dettaglio.php?tipo=user&id=<?php echo $listaAutori[$i]->getId() ?>"><?php echo ($listaAutori[$i]->getNome() . " " . $listaAutori[$i]->getCognome()) ?></a></p>
+                    <p class="lead"><img src="assets/img/arrow.png" style="width: 10px;"> <a href="dettaglio.php?tipo=user&id=<?php echo $listaAutori[$i]->getId() ?>"><?php echo ($listaAutori[$i]->getNome() . " " . $listaAutori[$i]->getCognome()) ?></a></p>
                 <?php
                 }
                 ?>

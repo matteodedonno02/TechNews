@@ -78,7 +78,7 @@ if(isset($_SESSION["loggedUser"]))
 
 
     <div class="container form register">
-      <form autocomplete="off" action="gestioneUtenti.php" method="POST" enctype="multipart/form-data">
+      <form autocomplete="off" action="gestioneUtenti.php" method="POST" enctype="multipart/form-data" style="margin-bottom: 40px;">
         <input type="hidden" name="cmd" value="registrazione">
         <fieldset>
             <div class="form-group">
