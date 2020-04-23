@@ -185,7 +185,7 @@ $utente = $_SESSION["loggedUser"];
             </div>
             <div class="form-group">
             <label for="txtLevel">Tipo</label>
-                <select disabled="true" class="form-control custom-select" id="txtLevel" name="txtLevel">
+                <select class="form-control custom-select" id="txtLevel" name="txtLevel">
                     <?php
                     if($utente->getLevel() == 1)
                     {

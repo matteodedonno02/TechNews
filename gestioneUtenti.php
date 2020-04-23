@@ -133,6 +133,9 @@ switch ($cmd)
         $linkFoto = "";
 
 
+        echo $level;
+
+
         if (isset($_FILES["txtLinkFoto"]) || !is_uploaded_file($_FILES["txtLinkFoto"]["tmp_name"])) 
         {
             define ("SITE_ROOT", realpath(dirname(__FILE__)));
@@ -161,7 +164,7 @@ switch ($cmd)
         session_destroy();
         session_start();
         $_SESSION["loggedUser"] = $db->getUtente($id);
-        header("location: account.php");
+        //header("location: account.php");
     break;
     case "modificaNews":
         $linkFoto = "";

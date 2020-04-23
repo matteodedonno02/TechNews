@@ -379,7 +379,6 @@ class ManagerDB
 
 
         $this->conn->query($query);
-        echo "FINITO \n";
     }
 
 
