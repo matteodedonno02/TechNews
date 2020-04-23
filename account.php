@@ -197,7 +197,7 @@ $db = new ManagerDB();
                 </div>
                 <a href="modifica-utente.php"><button type="button" class="btn btn-outline-primary">MODIFICA ACCOUNT</button></a>
             </div>
-            <div class="col-md-8 col-sm-12 blue-border">
+            <div class="col-md-8 col-sm-12 blue-border smartphone-container">
             <?php
                 if($utente->getLevel() == 1)
                 {

@@ -218,7 +218,7 @@ $db = new ManagerDB();
                     {
                     ?>
                         <div class="floated">
-                            <img class="blue-border floated" src="<?php echo $news->getLinkImmagine() ?>">
+                            <img class="blue-border floated img-news" src="<?php echo $news->getLinkImmagine() ?>">
                         </div>
                     <?php
                     }
@@ -360,7 +360,7 @@ $db = new ManagerDB();
                             <label class="font-medium"><?php echo $autore->getEmail() ?></label>
                         </div>
                     </div>
-                    <div class="col-md-8 col-sm-12 blue-border">
+                    <div class="col-md-8 col-sm-12 blue-border smartphone-container">
                     <?php
                         if(count($listaNewsDaAutore) == 0)
                         {

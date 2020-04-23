@@ -220,7 +220,7 @@ $listaAutori = $db->getAutori();
             }
             ?>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-4 col-sm-12 categorie">
                 <h4 class="titolo">Categorie</h4>
                 <?php
                 for($i = 0; $i < count($listaCategorie); $i ++)
