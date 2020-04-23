@@ -11,6 +11,10 @@ class ManagerDB
     public function __construct()
     {
         $this->conn = new mysqli("localhost", "root", "", "news");
+        $query = "SET NAMES utf8";
+        $this->conn->query($query);
+        $query = "SET CHARACTER SET utf8";
+        $this->conn->query($query);
     }
 
 
