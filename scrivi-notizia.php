@@ -186,5 +186,10 @@ $listaCategorie = $db->getCategorie();
 
     <script id="scriptCategorie" src="assets/js/selezioneCategorie.js"></script>
     <script src="assets/js/main.js"></script>
+
+
+    <?php
+        $db->chiudiConnessione();
+    ?>
 </body>
 </html>

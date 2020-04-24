@@ -246,5 +246,10 @@ $listaAutori = $db->getAutori();
                 ?>
             </div>
     </div>
+
+
+    <?php
+        $db->chiudiConnessione();
+    ?>
 </body>
 </html>

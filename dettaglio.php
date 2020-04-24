@@ -399,5 +399,8 @@ $db = new ManagerDB();
         }
         ?>
     </div>
+    <?php
+        $db->chiudiConnessione(); 
+    ?>
 </body>
 </html>

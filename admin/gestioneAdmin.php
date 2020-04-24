@@ -120,4 +120,7 @@ else
         break;
     }
 }
+
+
+$db->chiudiConnessione();
 ?>

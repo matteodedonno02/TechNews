@@ -214,5 +214,8 @@ $utente = $_SESSION["loggedUser"];
 
 
       <script src="assets/js/main.js"></script>
+      <?php
+        $db->chiudiConnessione();
+      ?>
 </body>
 </html>

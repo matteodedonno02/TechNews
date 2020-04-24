@@ -440,5 +440,10 @@ else
         }
         ?>
     </div>
+
+
+    <?php
+        $db->chiudiConnessione();
+    ?>
 </body>
 </html>

@@ -461,5 +461,11 @@ class ManagerDB
         $this->conn->query($query);
         return true;
     }
+
+
+    public function chiudConnessione()
+    {
+        mysqli_close($this->conn);
+    }
 }
 ?>

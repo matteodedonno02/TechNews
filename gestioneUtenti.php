@@ -203,4 +203,7 @@ switch ($cmd)
         header("location: account.php");
     break;
 }
+
+
+$db->chiudiConnessione();
 ?>
